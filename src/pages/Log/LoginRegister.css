@@ -1,0 +1,334 @@
+/* fontes e ícones */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
+@import url('https://use.fontawesome.com/releases/v5.8.2/css/all.css');
+
+:root {
+  --green: #58af9b;
+  --muted: #7f8c8d;
+}
+
+/* ----------- Reset e Centralização ----------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: linear-gradient(135deg, #d2f2e8, #c8f1e6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* ----------- Cartão Principal ----------- */
+.lr-card {
+  width: 100%;
+  max-width: 1000px;
+  height: 620px;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease;
+}
+
+/* ----------- Lado Esquerdo (verde) ----------- */
+.lr-left {
+  width: 45%;
+  min-width: 300px;
+  background: var(--green);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.lr-left-inner {
+  text-align: center;
+  max-width: 260px;
+}
+
+.lr-left-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.lr-left-text {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  opacity: 0.95;
+}
+
+/* ----------- Lado Direito (formulário) ----------- */
+.lr-right {
+  width: 55%;
+  padding: 40px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----------- Wrapper do Formulário ----------- */
+.form-wrap {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.form-title {
+  font-size: 28px;
+  color: var(--green);
+  font-weight: 700;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.small-muted {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* ----------- Ícones Sociais ----------- */
+.social-list {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px 0;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #d0d7d6;
+  color: #95a5a6;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social:hover {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+
+/* ----------- Inputs ----------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.label-input {
+  background: #f0f3f3;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0 10px;
+  position: relative;
+  height: 48px;
+}
+
+.label-input .icon {
+  color: var(--muted);
+  margin-right: 8px;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+
+.label-input input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.label-input span {
+  position: absolute;
+  left: 44px;
+  top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.label-input input:focus + span,
+.label-input input:not(:placeholder-shown) + span {
+  top: 5px;
+  font-size: 11px;
+  color: var(--green);
+}
+
+.label-input input:focus ~ .icon {
+  color: var(--green);
+}
+
+/* ======== BOTÕES ======== */
+.btn {
+  padding: 10px 36px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-weight: 700;
+  border: none;
+  transition: all 0.3s ease;
+  z-index: 9999999999999999;
+}
+
+/* Botão verde principal */
+.btn-primary {
+  background: #58af9b;
+  color: #4b9b87;
+  border: 1px solid #58af9b;
+  z-index: 9999999999999999 ;
+}
+
+.btn-primary:hover {
+  background: #4b9b87;
+}
+
+/* Botão contornado branco (usado no painel verde) */
+.btn-outline {
+  background: #58af9b;       /* antes era transparente */
+  color: #fff;               /* texto branco */
+  border: 1px solid #58af9b; /* borda verde */
+  padding: 10px 30px;
+  border-radius: 22px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: #fff;
+  color: #58af9b;
+}
+
+
+/* ----------- Erros e Links ----------- */
+.password-link {
+  display: block;
+  text-align: right;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.password-link:hover {
+  color: var(--green);
+}
+
+.error-message {
+  color: #d64545;
+  font-size: 13px;
+  margin-top: 4px;
+  text-align: left;
+}
+
+/* ----------- Responsividade ----------- */
+@media (max-width: 900px) {
+  .lr-card {
+    flex-direction: column;
+    height: auto;
+    max-width: 720px;
+  }
+
+  .lr-left {
+    width: 100%;
+    padding: 30px 20px;
+  }
+
+  .lr-right {
+    width: 100%;
+    padding: 30px 20px;
+  }
+
+  .lr-left-inner {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-wrap {
+    max-width: 100%;
+  }
+
+  .form-title {
+    font-size: 22px;
+  }
+
+  .lr-left-title {
+    font-size: 20px;
+  }
+}
+
+/* ----------- Animação Inicial ----------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== CENTRALIZAÇÃO DO CONTAINER ===== */
+.lr-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* centraliza horizontalmente */
+  align-items: center;     /* centraliza verticalmente */
+  background: linear-gradient(135deg, #d2f2e8, #c8f1e6);
+}
+
+/* Faz o card parecer suspenso no meio */
+.lr-card {
+  transform: translateY(-20px); /* "suspenso" */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+.lr-card:hover {
+  transform: translateY(0); /* efeito ao passar o mouse */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+/* Adiciona uma leve animação de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.lr-card {
+  animation: fadeIn 0.5s ease;
+}

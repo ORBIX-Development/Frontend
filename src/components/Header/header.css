@@ -1,0 +1,22 @@
+/* header.css */
+.header {
+  width: 100%;
+  background: transparent; /* mantém fundo do layout */
+  display: flex;
+  justify-content: center; /* centraliza o conteúdo horizontalmente */
+  padding: 12px 0;
+}
+
+.header-nav {
+  display: flex;
+  gap: 12px; /* espaço entre botões */
+  align-items: center;
+}
+
+.header-btn {
+  display: inline-flex;
+}
+
+@media (max-width: 480px) {
+  .header-nav { gap: 8px; }
+}

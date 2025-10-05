@@ -1,0 +1,141 @@
+/* perfil.css - estilo inspirado em LoginRegister.css */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap');
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #c8f1e6;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.perfil-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 70px);
+}
+
+.content {
+  background-color: #fff;
+  border-radius: 15px;
+  width: 960px;
+  height: 70%;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.content::before {
+  content: "";
+  position: absolute;
+  background-color: #58af9b;
+  width: 40%;
+  height: 100%;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  left: 0;
+}
+
+.first-content {
+  display: flex;
+  height: 100%;
+}
+
+.first-column {
+  text-align: center;
+  width: 40%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.second-column {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+}
+
+.title { font-size: 28px; font-weight: bold; text-transform: capitalize; }
+.title-primary { color: #fff; }
+.description { font-size: 14px; font-weight: 300; line-height: 30px; }
+.description-primary { color: #fff; }
+
+/* form style similar to LoginRegister */
+.form { display: flex; flex-direction: column; width: 100%; gap: 12px; }
+
+.label-input {
+  background-color: #ecf0f1;
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+  border-radius: 8px;
+  padding: 0 10px;
+  position: relative;
+  height: 45px;
+}
+
+.form input, .label-input input {
+  height: 45px;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 0 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.label-input span {
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  color: #7f8c8d;
+  font-size: 14px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.label-input input:focus + span,
+.label-input input:not(:placeholder-shown) + span {
+  top: 2px;
+  left: 20px;
+  font-size: 11px;
+  color: #58af9b;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 420px;
+  background: transparent;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.perfil-card h2 { margin-top: 0; margin-bottom: 8px; }
+
+.perfil-actions { margin-top: 16px; display:flex; gap: 8px; align-items: center; }
+.error { color: #b00020; }
+
+/* buttons */
+.btn { border-radius: 15px; text-transform: uppercase; color: #fff; font-size: 12px; padding: 10px 24px; cursor: pointer; font-weight: bold; border: none; }
+.btn-primary { background-color: transparent; border: 1px solid #fff; }
+.btn-primary:hover { background-color: #fff; color: #58af9b; }
+.btn-second { background-color: #58af9b; border: 1px solid #58af9b; }
+.btn-second:hover { background-color: #fff; border: 1px solid #58af9b; color: #58af9b; }
+
+@media (max-width: 900px) {
+  .content { width: 96%; height: auto; }
+  .content::before { display: none; }
+  .first-content { flex-direction: column; }
+  .first-column, .second-column { width: 100%; }
+  .perfil-wrapper { height: auto; padding: 24px 0; }
+}

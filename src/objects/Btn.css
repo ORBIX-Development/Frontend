@@ -1,0 +1,29 @@
+/* Estilos para botões reutilizáveis (classe .Btn) */
+.Btn {
+    background-color: var(--brand-green);
+    color: var(--card-white);
+    border: none;
+    padding: 10px 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: var(--font-size-base);
+    margin: var(--space-xxs) var(--space-xs);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 150ms ease, transform 120ms ease, box-shadow 120ms ease;
+    box-shadow: 0 6px 18px rgba(16,88,70,0.06);
+    font-family: var(--font-sans);
+}
+.Btn:hover {
+    background-color: var(--brand-green-dark);
+    transform: translateY(-1px);
+}
+.Btn:active {
+    transform: translateY(0);
+}
+/* fallback for accessibility focus */
+.Btn:focus {
+    outline: 2px solid rgba(88,175,155,0.28);
+    outline-offset: 2px;
+}
