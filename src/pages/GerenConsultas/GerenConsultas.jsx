@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getAgendamento, deleteAgendamento, getUsuario, createConsulta, getConsulta } from '../../Services/api';
+import { getAgendamentos, deleteAgendamento, getUsuarios, createConsulta, getConsultas } from '../../Services/api';
 
 const PageGerenConsultas = () => {
     const [solicitacoes, setSolicitacoes] = useState([]);
@@ -28,7 +28,7 @@ const PageGerenConsultas = () => {
             setLoading(true);
             setError('');
             try {
-                const [agRes, uRes, cRes] = await Promise.all([getAgendamento(), getUsuario(), getConsulta()]);
+                const [agRes, uRes, cRes] = await Promise.all([getAgendamentos(), getUsuarios(), getConsultas()]);
                 const ag = agRes && agRes.data ? agRes.data : agRes;
                 const us = uRes && uRes.data ? uRes.data : uRes;
                 const cs = cRes && cRes.data ? cRes.data : cRes;

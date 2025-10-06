@@ -88,6 +88,8 @@ body {
   text-align: center;
 }
 
+
+
 .form-title {
   font-size: 28px;
   color: var(--green);
@@ -166,14 +168,25 @@ body {
   font-size: 14px;
 }
 
+.label-input select{
+  background: #f0f3f3;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0 10px;
+  position: relative;
+  height: 48px;
+}
+
 .label-input span {
   position: absolute;
-  left: 44px;
+  left: 100px;
   top: 14px;
   font-size: 14px;
   color: var(--muted);
   pointer-events: none;
   transition: all 0.25s ease;
+  margin-left: 0.9rem;
 }
 
 .label-input input:focus + span,
@@ -199,9 +212,9 @@ body {
 }
 
 /* Botão verde principal */
-.btn-primary {
+.btn.btn-primary {
   background: #58af9b;
-  color: #4b9b87;
+  color: #ffffff;
   border: 1px solid #58af9b;
   z-index: 9999999999999999 ;
 }
@@ -211,9 +224,9 @@ body {
 }
 
 /* Botão contornado branco (usado no painel verde) */
-.btn-outline {
-  background: #58af9b;       /* antes era transparente */
-  color: #fff;               /* texto branco */
+.btn.btn-outline {
+  background: #ffffff;       /* antes era transparente */
+  color: #58af9b;               /* texto branco */
   border: 1px solid #58af9b; /* borda verde */
   padding: 10px 30px;
   border-radius: 22px;
@@ -222,8 +235,8 @@ body {
 }
 
 .btn-outline:hover {
-  background: #fff;
-  color: #58af9b;
+  background: #58af9b;
+  color: #fff;
 }
 
 

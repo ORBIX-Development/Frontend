@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getConsulta, getUsuarioById, createAgendamento } from '../../Services/api';
+import { getConsultas, getUsuarioById, createAgendamento } from '../../Services/api';
 
 const PageConsulta = () => {
     const [consultas, setConsultas] = useState([]);
@@ -26,7 +26,7 @@ const PageConsulta = () => {
             setLoading(true);
             setError('');
             try {
-                const res = await getConsulta();
+                const res = await getConsultas();
                 const list = res && res.data ? res.data : res;
 
                 // filter by role: cliente sees suas consultas; medico vê as suas; secretaria/admin vê todas
@@ -140,9 +140,9 @@ const PageConsulta = () => {
                     <label className="mr-sm">Status:</label>
                     <select value={filterStatus} onChange={(e) => { setFilterStatus(e.target.value); setPage(1); }} className="mr-sm">
                         <option value="">Todos</option>
-                        <option value="nao_realizada">Não realizada</option>
-                        <option value="realizada">Realizada</option>
-                        <option value="cancelada">Cancelada</option>
+                        <option value="NAO-REALIZADA">Não realizada</option>
+                        <option value="REALIZADA">Realizada</option>
+                        <option value="CANCELADA">Cancelada</option>
                     </select>
                     <label className="mr-sm">Buscar médico:</label>
                     <input placeholder="Nome do médico" value={searchMedico} onChange={(e) => { setSearchMedico(e.target.value); setPage(1); }} className="mr-sm" />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getUsuario, updateUsuario, deleteUsuario } from '../../Services/api';
+import { getUsuarios, updateUsuario, deleteUsuario } from '../../Services/api';
 
 const PageGerenUser = () => {
     const [users, setUsers] = useState([]);
@@ -19,7 +19,7 @@ const PageGerenUser = () => {
             setLoading(true);
             setError('');
             try {
-                const res = await getUsuario();
+                const res = await getUsuarios();
                 const list = res && res.data ? res.data : res;
                 setUsers(Array.isArray(list) ? list : []);
             } catch {

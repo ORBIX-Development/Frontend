@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import Header from '../../components/Header/header.jsx';
-import { getUsuarioById, updateUsuario } from '../../Services/api';
+import { getUsuarioById, updateUsuario } from '../../Services/api.js';
 import './perfil.css';
 import lifeImg from '../../assets/life.png';
 

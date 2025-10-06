@@ -3,7 +3,7 @@ import Header from '../../components/Header/header.jsx';
 import Modal from '../../components/Modal/Modal.jsx';
 import useToast from '../../components/Toast/useToast.js';
 import usePagination from '../../hooks/usePagination';
-import { getConsulta, getUsuarioById, updateConsulta, createAtendimento } from '../../Services/api';
+import { getConsultas, getUsuarioById, updateConsulta, createAtendimento } from '../../Services/api';
 
 const PageConsultaMedico = () => {
     const [consultas, setConsultas] = useState([]);
@@ -31,7 +31,7 @@ const PageConsultaMedico = () => {
             setLoading(true);
             setError('');
             try {
-                const res = await getConsulta();
+                const res = await getConsultas();
                 const list = res && res.data ? res.data : res;
                 const my = (Array.isArray(list) ? list : []).filter(c => String(c.id_medico) === String(userId));
                 setConsultas(my);
