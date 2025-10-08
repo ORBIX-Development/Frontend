@@ -11,7 +11,7 @@ const Header = ({ role }) => {
     const userRole = (role || localStorage.getItem('userRole') || '').toLowerCase();
 
     const buttonsByRole = {
-        cliente: [<HomeBtn key="home" />, <ConsultasBtn key="consultas" />, <PerfilBtn key="perfil" />],
+        cliente: [ <HomeBtn key="home" />,<ConsultasBtn key="consultas" />, <PerfilBtn key="perfil" />],
         medico: [<HomeBtn key="home" />, <MedConsultas key="medconsultas" />, <PerfilBtn key="perfil" />],
         secretaria: [<HomeBtn key="home" />, <GerenConsulta key="gerenconsultas" />, <PerfilBtn key="perfil" />],
         admin: [<HomeBtn key="home" />, <GerenciarUserBtn key="gerenuser" />, <PerfilBtn key="perfil" />],

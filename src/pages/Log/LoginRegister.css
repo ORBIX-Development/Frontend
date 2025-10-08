@@ -14,7 +14,9 @@
   padding: 0;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   width: 100%;
 }
@@ -87,8 +89,6 @@ body {
   max-width: 420px;
   text-align: center;
 }
-
-
 
 .form-title {
   font-size: 28px;
@@ -168,7 +168,7 @@ body {
   font-size: 14px;
 }
 
-.label-input select{
+.label-input select {
   background: #f0f3f3;
   display: flex;
   align-items: center;
@@ -216,7 +216,7 @@ body {
   background: #58af9b;
   color: #ffffff;
   border: 1px solid #58af9b;
-  z-index: 9999999999999999 ;
+  z-index: 9999999999999999;
 }
 
 .btn-primary:hover {
@@ -225,8 +225,8 @@ body {
 
 /* Botão contornado branco (usado no painel verde) */
 .btn.btn-outline {
-  background: #ffffff;       /* antes era transparente */
-  color: #58af9b;               /* texto branco */
+  background: #ffffff; /* antes era transparente */
+  color: #58af9b; /* texto branco */
   border: 1px solid #58af9b; /* borda verde */
   padding: 10px 30px;
   border-radius: 22px;
@@ -238,7 +238,6 @@ body {
   background: #58af9b;
   color: #fff;
 }
-
 
 /* ----------- Erros e Links ----------- */
 .password-link {
@@ -318,7 +317,7 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center; /* centraliza horizontalmente */
-  align-items: center;     /* centraliza verticalmente */
+  align-items: center; /* centraliza verticalmente */
   background: linear-gradient(135deg, #d2f2e8, #c8f1e6);
 }
 

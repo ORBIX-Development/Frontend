@@ -1,0 +1,100 @@
+.page-container {
+  padding: 30px;
+  background-color: #f4f7f6;
+  min-height: 100vh;
+}
+
+.consultas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.consultas-header h2 {
+  color: #1f2937;
+}
+
+.consultas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.consulta-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.consulta-card:hover {
+  transform: translateY(-4px);
+}
+
+.consulta-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.consulta-medico {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.consulta-especialidade {
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.consulta-data {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.consulta-status {
+  font-weight: 600;
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+.status-concluida {
+  color: #22c55e; /* verde */
+}
+
+.status-pendente {
+  color: #10b981; /* verde-água */
+}
+
+.status-cancelada {
+  color: #ef4444; /* vermelho */
+}
+
+.pagination-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.Btn {
+  background-color: #10b981;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.Btn:hover {
+  background-color: #0d946d;
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/header.jsx';
 import { getAgendamentos, deleteAgendamento, getUsuarios, createConsulta, getConsultas } from '../../Services/api';
+import '../Consultas/Consulta.css';
 
 const PageGerenConsultas = () => {
     const [solicitacoes, setSolicitacoes] = useState([]);

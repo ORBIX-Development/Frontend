@@ -1,60 +1,60 @@
-import React, { useState } from "react";
-import "./LoginRegister.css";
-import "dotenv"
+import React, { useState } from 'react';
+import './LoginRegister.css';
+import 'dotenv';
 
 function LoginRegister() {
   const [isSignIn, setIsSignIn] = useState(false);
 
   // Login state
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [errorLoginEmail, setErrorLoginEmail] = useState("");
-  const [errorLoginPassword, setErrorLoginPassword] = useState("");
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [errorLoginEmail, setErrorLoginEmail] = useState('');
+  const [errorLoginPassword, setErrorLoginPassword] = useState('');
   const [loadingLogin, setLoadingLogin] = useState(false);
 
   // Register state
-  const [regName, setRegName] = useState("");
-  const [regEmail, setRegEmail] = useState("");
-  const [regPassword, setRegPassword] = useState("");
-  const [regCodDoc, setRegCodDoc] = useState("");
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regCodDoc, setRegCodDoc] = useState('');
 
-  const [errorRegName, setErrorRegName] = useState("");
-  const [errorRegEmail, setErrorRegEmail] = useState("");
-  const [errorRegPassword, setErrorRegPassword] = useState("");
-  const [errorRegCodDoc, setErrorRegCodDoc] = useState("");
+  const [errorRegName, setErrorRegName] = useState('');
+  const [errorRegEmail, setErrorRegEmail] = useState('');
+  const [errorRegPassword, setErrorRegPassword] = useState('');
+  const [errorRegCodDoc, setErrorRegCodDoc] = useState('');
 
   const [loadingReg, setLoadingReg] = useState(false);
 
   const handleSignIn = () => setIsSignIn(true);
   const handleSignUp = () => setIsSignIn(false);
 
-  const API_URL = "http://localhost:3000"; 
+  const API_URL = 'http://localhost:3000';
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    setErrorLoginEmail("");
-    setErrorLoginPassword("");
+    setErrorLoginEmail('');
+    setErrorLoginPassword('');
 
-    if (!loginEmail.trim()) return setErrorLoginEmail("Email é obrigatório");
-    if (!loginPassword) return setErrorLoginPassword("Senha é obrigatória");
+    if (!loginEmail.trim()) return setErrorLoginEmail('Email é obrigatório');
+    if (!loginPassword) return setErrorLoginPassword('Senha é obrigatória');
 
     setLoadingLogin(true);
     try {
       const res = await fetch(`${API_URL}/usuarios/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: loginEmail, senha: loginPassword }),
       });
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Credenciais inválidas");
+        throw new Error(error.message || 'Credenciais inválidas');
       }
 
       const data = await res.json();
-      localStorage.setItem("token", data.token);
-      alert("Login realizado com sucesso!");
-      window.location.href = "/home";
+      localStorage.setItem('token', data.token);
+      alert('Login realizado com sucesso!');
+      window.location.href = '/consultas';
     } catch (err) {
       alert(err.message);
     } finally {
@@ -64,37 +64,36 @@ function LoginRegister() {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    setErrorRegName("");
-    setErrorRegEmail("");
-    setErrorRegPassword("");
-    setErrorRegCodDoc("");
+    setErrorRegName('');
+    setErrorRegEmail('');
+    setErrorRegPassword('');
+    setErrorRegCodDoc('');
 
     let valid = true;
     if (!regName.trim()) {
-      setErrorRegName("Nome é obrigatório");
+      setErrorRegName('Nome é obrigatório');
       valid = false;
     }
     if (!regEmail.trim()) {
-      setErrorRegEmail("Email é obrigatório");
+      setErrorRegEmail('Email é obrigatório');
       valid = false;
     }
     if (!regPassword) {
-      setErrorRegPassword("Senha é obrigatória");
+      setErrorRegPassword('Senha é obrigatória');
       valid = false;
     }
     if (!regCodDoc.trim()) {
-      setErrorRegCodDoc("Código do documento é obrigatório");
+      setErrorRegCodDoc('Código do documento é obrigatório');
       valid = false;
     }
-  
 
     if (!valid) return;
 
     setLoadingReg(true);
     try {
       const res = await fetch(`${API_URL}/usuarios/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome: regName,
           email: regEmail,
@@ -105,17 +104,17 @@ function LoginRegister() {
 
       if (!res.ok) {
         const error = await res.json();
-        throw new Error(error.message || "Erro ao registrar");
+        throw new Error(error.message || 'Erro ao registrar');
       }
 
       const data = await res.json();
-      alert("Registro realizado com sucesso!");
-      console.log("Usuário registrado:", data);
+      alert('Registro realizado com sucesso!');
+      console.log('Usuário registrado:', data);
       setIsSignIn(true);
-      setRegName("");
-      setRegEmail("");
-      setRegPassword("");
-      setRegCodDoc("");
+      setRegName('');
+      setRegEmail('');
+      setRegPassword('');
+      setRegCodDoc('');
     } catch (err) {
       alert(err.message);
     } finally {
@@ -132,9 +131,14 @@ function LoginRegister() {
             <div className="lr-left-inner">
               <h2 className="lr-left-title">Bem-vindo de volta!</h2>
               <p className="lr-left-text">
-                Para se manter conectado, faça login com suas informações pessoais.
+                Para se manter conectado, faça login com suas informações
+                pessoais.
               </p>
-              <button type="button" className="btn btn-outline" onClick={handleSignIn}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={handleSignIn}
+              >
                 Fazer Login
               </button>
             </div>
@@ -142,9 +146,14 @@ function LoginRegister() {
             <div className="lr-left-inner">
               <h2 className="lr-left-title">Seja bem-vindo!</h2>
               <p className="lr-left-text">
-                Insira suas informações para criar sua conta e iniciar sua jornada conosco.
+                Insira suas informações para criar sua conta e iniciar sua
+                jornada conosco.
               </p>
-              <button type="button" className="btn btn-outline" onClick={handleSignUp}>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={handleSignUp}
+              >
                 Criar Conta
               </button>
             </div>
@@ -170,7 +179,9 @@ function LoginRegister() {
                   />
                   <span>Nome</span>
                 </label>
-                {errorRegName && <div className="error-message">{errorRegName}</div>}
+                {errorRegName && (
+                  <div className="error-message">{errorRegName}</div>
+                )}
 
                 <label className="label-input">
                   <i className="far fa-envelope icon" />
@@ -182,7 +193,9 @@ function LoginRegister() {
                   />
                   <span>Email</span>
                 </label>
-                {errorRegEmail && <div className="error-message">{errorRegEmail}</div>}
+                {errorRegEmail && (
+                  <div className="error-message">{errorRegEmail}</div>
+                )}
 
                 <label className="label-input">
                   <i className="fas fa-lock icon" />
@@ -194,7 +207,9 @@ function LoginRegister() {
                   />
                   <span>Senha</span>
                 </label>
-                {errorRegPassword && <div className="error-message">{errorRegPassword}</div>}
+                {errorRegPassword && (
+                  <div className="error-message">{errorRegPassword}</div>
+                )}
 
                 <label className="label-input">
                   <i className="fas fa-id-card icon" />
@@ -204,18 +219,14 @@ function LoginRegister() {
                     value={regCodDoc}
                     onChange={(e) => setRegCodDoc(e.target.value)}
                   />
-                  <span>Código do Documento</span>
+                  <span>CPF, CNPJ ou CRM</span>
                 </label>
-                {errorRegCodDoc && <div className="error-message">{errorRegCodDoc}</div>}
-  
-    
-                  
-                  
-                
-              
+                {errorRegCodDoc && (
+                  <div className="error-message">{errorRegCodDoc}</div>
+                )}
 
                 <button type="submit" className="btn btn-primary">
-                  {loadingReg ? "Registrando..." : "Registre-se"}
+                  {loadingReg ? 'Registrando...' : 'Registre-se'}
                 </button>
               </form>
             </div>
@@ -236,7 +247,9 @@ function LoginRegister() {
                   />
                   <span>Email</span>
                 </label>
-                {errorLoginEmail && <div className="error-message">{errorLoginEmail}</div>}
+                {errorLoginEmail && (
+                  <div className="error-message">{errorLoginEmail}</div>
+                )}
 
                 <label className="label-input">
                   <i className="fas fa-lock icon" />
@@ -248,14 +261,20 @@ function LoginRegister() {
                   />
                   <span>Senha</span>
                 </label>
-                {errorLoginPassword && <div className="error-message">{errorLoginPassword}</div>}
+                {errorLoginPassword && (
+                  <div className="error-message">{errorLoginPassword}</div>
+                )}
 
-                <a className="password-link" href="#" onClick={(e) => e.preventDefault()}>
+                <a
+                  className="password-link"
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                >
                   Esqueceu sua senha?
                 </a>
 
                 <button type="submit" className="btn btn-primary">
-                  {loadingLogin ? "Entrando..." : "Login"}
+                  {loadingLogin ? 'Entrando...' : 'Login'}
                 </button>
               </form>
             </div>
