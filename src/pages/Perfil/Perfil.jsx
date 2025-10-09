@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import Header from '../../components/Header/header.jsx';
 import { getUsuarioById, updateUsuario } from '../../Services/api.js';
 import './perfil.css';
-import lifeImg from '../../assets/life.png';
 
 const Perfil = () => {
     const { id } = useParams();
@@ -89,7 +88,6 @@ const Perfil = () => {
                     <div className="first-content">
                         <div className="first-column">
                             <div className="page-container centered">
-                                <img src={lifeImg} alt="logo" className="logo-sm" />
                                 <h3 className="title title-primary">Perfil</h3>
                                 <p className="description description-primary">Gerencie suas informações</p>
                             </div>

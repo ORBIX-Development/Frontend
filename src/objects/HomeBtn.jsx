@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const HomeBtn = () => {
   const navigate = useNavigate();
   return (
-    <button className="Btn" onClick={() => navigate('/')}>Inicio</button>
+    <button className="Btn" onClick={() => navigate('/Home')}>Inicio</button>
   );
 }
 

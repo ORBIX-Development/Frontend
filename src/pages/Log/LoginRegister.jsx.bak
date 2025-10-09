@@ -53,15 +53,8 @@ function LoginRegister() {
 
       const data = await res.json();
       localStorage.setItem('token', data.token);
-      // armazenar dados do usuário para controle de rotas/menus
-      if (data.user) {
-        localStorage.setItem('userRole', String(data.user.cargo || '').toLowerCase());
-        localStorage.setItem('userId', String(data.user.id || ''));
-        localStorage.setItem('userName', String(data.user.nome || ''));
-      }
       alert('Login realizado com sucesso!');
-      // redirecionar para home — header exibirá botões conforme cargo
-      window.location.href = '/home';
+      window.location.href = '/consultas';
     } catch (err) {
       alert(err.message);
     } finally {

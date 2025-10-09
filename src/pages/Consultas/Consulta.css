@@ -1,100 +1,37 @@
-.page-container {
-  padding: 30px;
-  background-color: #f4f7f6;
-  min-height: 100vh;
-}
+.med-page { background: #f4f7f6; min-height: calc(100vh - 70px); padding: 28px 20px; }
+.page-card { background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(12,24,18,0.04); border: 1px solid rgba(0,0,0,0.03); max-width: 1100px; margin: 0 auto; }
 
-.consultas-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
+.consultas-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.consultas-header h2 { color:#1f2937; }
 
-.consultas-header h2 {
-  color: #1f2937;
-}
+.consultas-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 
-.consultas-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
-}
+.consulta-card { background-color: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 6px 18px rgba(10,20,10,0.04); transition: transform 0.18s ease; display:flex; justify-content:space-between; align-items:flex-start; cursor:pointer; }
+.consulta-card:hover { transform: translateY(-4px); }
 
-.consulta-card {
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 18px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
+.consulta-info { display:flex; flex-direction:column; }
+.consulta-medico { font-weight:700; color:#114b3a; margin-bottom:6px; }
+.consulta-especialidade { color:#6c757d; font-size:0.95rem; margin-bottom:6px; }
+.consulta-data { color:#8aa095; font-size:0.9rem; }
 
-.consulta-card:hover {
-  transform: translateY(-4px);
-}
+.consulta-status { font-weight:700; align-self:flex-start; margin-top:8px; padding:6px 12px; border-radius:16px; font-size:13px; }
+.status-concluida { background:#e6f0ff; color:#0b47a6; }
+.status-pendente { background:#fff7e6; color:#7a5a0a; }
+.status-cancelada { background:#ffe6e6; color:#7a0a0a; }
 
-.consulta-info {
-  display: flex;
-  flex-direction: column;
-}
+.pagination-row { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:22px; }
+.pagination-row span { color:#333; }
+.pagination-row .Btn { background:#ffffff; border:1px solid #e6efe9; padding:6px 12px; border-radius:999px; }
+.Btn[disabled] { opacity:0.5; cursor:default; }
 
-.consulta-medico {
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 2px;
-}
+/* Page-scoped color overrides to remove green accents on /consultas */
+.page-card .Btn.primary { background: #0b63d6; color: #fff; border: none; }
+.page-card .Btn.primary:hover { filter: brightness(.95); }
+.page-card .consulta-status.status-concluida { background: #e6f0ff; color: #0b47a6; }
 
-.consulta-especialidade {
-  color: #555;
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-}
+/* ensure modal title and buttons look consistent with modal.css */
+.modal-title { color: #0b6b4a; font-size:20px; margin-bottom:8px; }
 
-.consulta-data {
-  color: #777;
-  font-size: 0.85rem;
-}
-
-.consulta-status {
-  font-weight: 600;
-  align-self: flex-start;
-  margin-top: 5px;
-}
-
-.status-concluida {
-  color: #22c55e; /* verde */
-}
-
-.status-pendente {
-  color: #10b981; /* verde-água */
-}
-
-.status-cancelada {
-  color: #ef4444; /* vermelho */
-}
-
-.pagination-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.Btn {
-  background-color: #10b981;
-  border: none;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
-}
-
-.Btn:hover {
-  background-color: #0d946d;
+@media (max-width:700px) {
+  .page-card { padding: 16px; }
 }

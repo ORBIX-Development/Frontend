@@ -3,7 +3,7 @@ import Header from '../../components/Header/header.jsx';
 import Modal from '../../components/Modal/Modal.jsx';
 import useToast from '../../components/Toast/useToast.js';
 import usePagination from '../../hooks/usePagination';
-import { getConsultas, getUsuarioById, updateConsulta, createReceita, getReceitas, updateReceita } from '../../Services/api';
+import { getConsultas, getUsuarioById, updateConsulta, createReceita } from '../../Services/api';
 import './MedConsultas.css';
 
 const PageConsultaMedico = () => {
@@ -27,8 +27,6 @@ const PageConsultaMedico = () => {
     const [dosagem, setDosagem] = useState('');
     const [duracao, setDuracao] = useState('');
     const [instrucao, setInstrucao] = useState('');
-    const [editingRecipe, setEditingRecipe] = useState(false);
-    const [editingReceitaId, setEditingReceitaId] = useState(null);
     const [actionMsg, setActionMsg] = useState('');
 
     const userId = localStorage.getItem('userId');
@@ -98,33 +96,7 @@ const PageConsultaMedico = () => {
         setDosagem('');
         setDuracao('');
         setInstrucao('');
-        setEditingRecipe(false);
-        setEditingReceitaId(null);
         setActionMsg('');
-        setShowCompleteModal(true);
-    };
-
-    const openEditReceitaModal = async (consulta) => {
-        setCurrentConsulta(consulta);
-        // try to load existing receita for this consulta
-        setActionMsg('');
-        setFarmaco(''); setDosagem(''); setDuracao(''); setInstrucao('');
-        setEditingReceitaId(null);
-        setEditingRecipe(true);
-        try {
-            const r = await getReceitas();
-            const list = r && r.data ? r.data : r;
-            const found = Array.isArray(list) ? list.find(x => Number(x.id_consulta) === Number(consulta.id)) : null;
-            if (found) {
-                setFarmaco(found.farmaco || '');
-                setDosagem(found.dosagem || '');
-                setDuracao(found.duracao || '');
-                setInstrucao(found.instrucao || '');
-                setEditingReceitaId(found.id || found.id_receita || null);
-            }
-        } catch {
-            // ignore
-        }
         setShowCompleteModal(true);
     };
 
@@ -132,7 +104,10 @@ const PageConsultaMedico = () => {
         if (!currentConsulta) return;
         setActionMsg('');
         try {
-            // If editing an existing recipe, update it; otherwise if not editing, mark consulta as realizada and create recipe
+            // normalizar status para o formato usado na aplicação
+            await updateConsulta(currentConsulta.id, { status_consulta: 'realizada' });
+            // criar atendimento com observação e prescrição
+            // criar receita associada à consulta
             const receitaPayload = {
                 farmaco: farmaco || '',
                 dosagem: dosagem || '',
@@ -141,26 +116,12 @@ const PageConsultaMedico = () => {
                 id_medico: Number(userId) || Number(currentConsulta.id_medico),
                 id_consulta: Number(currentConsulta.id)
             };
-            if (editingRecipe) {
-                // update existing receita if id available, otherwise create new one
-                setActionMsg('Salvando receita...');
-                if (editingReceitaId) {
-                    await updateReceita(editingReceitaId, receitaPayload);
-                    toast.push({ type: 'success', title: 'Atualizado', message: 'Receita atualizada com sucesso.' });
-                } else {
-                    await createReceita(receitaPayload);
-                    toast.push({ type: 'success', title: 'Criado', message: 'Receita criada com sucesso.' });
-                }
-                setShowCompleteModal(false);
-            } else {
-                // normal flow: mark consulta realizada and create receita
-                await updateConsulta(currentConsulta.id, { status_consulta: 'realizada' });
-                setActionMsg('Enviando receita...');
-                await createReceita(receitaPayload);
-                setConsultas(prev => prev.map(c => c.id === currentConsulta.id ? { ...c, status_consulta: 'realizada' } : c));
-                setShowCompleteModal(false);
-                toast.push({ type: 'success', title: 'Concluído', message: 'Consulta marcada como realizada e atendimento criado.' });
-            }
+            console.debug('Payload createReceita:', receitaPayload);
+            setActionMsg('Enviando receita...');
+            await createReceita(receitaPayload);
+            setConsultas(prev => prev.map(c => c.id === currentConsulta.id ? { ...c, status_consulta: 'realizada' } : c));
+            setShowCompleteModal(false);
+            toast.push({ type: 'success', title: 'Concluído', message: 'Consulta marcada como realizada e atendimento criado.' });
         } catch (err) {
             // tentar extrair info do AxiosError
             const status = err && err.response && err.response.status;
@@ -230,11 +191,11 @@ const PageConsultaMedico = () => {
                                                 <div className="mc-sub">{c.especialidade || 'Clínico Geral'}</div>
                                                 <div className="mc-date">{new Date(c.data_consulta).toLocaleString()}</div>
                                             </div>
-                                                <div className="mc-actions">
-                                                {String(c.status_consulta).toLowerCase() !== 'realizada' ? (
+                                            <div className="mc-actions">
+                                                {c.status_consulta !== 'realizada' ? (
                                                     <button className="Btn primary" onClick={() => openCompleteModal(c)}>Marcar como realizada</button>
                                                 ) : (
-                                                    <button className="Btn warning" onClick={() => openEditReceitaModal(c)}>Editar receita</button>
+                                                    <button className="Btn" disabled>Realizada</button>
                                                 )}
                                             </div>
                                         </div>
@@ -293,8 +254,8 @@ const PageConsultaMedico = () => {
                         </div>
                         {actionMsg && <div className="error-text mb-sm">{actionMsg}</div>}
                         <div className="actions-row">
-                            <button className="modal-btn secondary" onClick={() => { setShowCompleteModal(false); setCurrentConsulta(null); }}>Fechar</button>
-                            <button className="modal-btn primary" onClick={handleConfirmRealizada}>Salvar e encerrar</button>
+                            <button className="Btn" onClick={() => { setShowCompleteModal(false); setCurrentConsulta(null); }}>Fechar</button>
+                            <button className="Btn" onClick={handleConfirmRealizada}>Salvar e encerrar</button>
                         </div>
                     </Modal>
                 )}

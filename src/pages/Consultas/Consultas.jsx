@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getConsultas, getUsuarioById } from '../../Services/api';
+import Modal from '../../components/Modal/Modal.jsx';
+import { getConsultas, getUsuarioById, getReceitas } from '../../Services/api';
 import "./Consulta.css";
 
 const PageConsulta = () => {
@@ -8,8 +9,14 @@ const PageConsulta = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [medicosMap, setMedicosMap] = useState({});
+  const [showReceitaModal, setShowReceitaModal] = useState(false);
+  const [receitaLoading, setReceitaLoading] = useState(false);
+  const [currentReceita, setCurrentReceita] = useState(null);
   const [page, setPage] = useState(1);
-  const pageSize = 6;
+  const [pageSize, setPageSize] = useState(6);
+  const [filterStatus, setFilterStatus] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const userId = localStorage.getItem('userId');
   const userRole = localStorage.getItem('userRole');
@@ -42,7 +49,10 @@ const PageConsulta = () => {
             const r = await getUsuarioById(mid);
             const u = r && r.data ? r.data : r;
             if (u && u.nome) map[mid] = u.nome;
-          } catch {}
+          } catch (err) {
+            // ignore individual user fetch errors
+            console.debug('Erro ao buscar usuário:', err);
+          }
         }));
         setMedicosMap(map);
       } catch {
@@ -55,48 +65,93 @@ const PageConsulta = () => {
     fetchConsultas();
   }, [userId, userRole]);
 
+  const openReceitaModal = async (consulta) => {
+    setShowReceitaModal(true);
+    setReceitaLoading(true);
+    setCurrentReceita(null);
+    try {
+      const r = await getReceitas();
+      const list = r && r.data ? r.data : r;
+      const found = Array.isArray(list) ? list.find(x => Number(x.id_consulta) === Number(consulta.id)) : null;
+      if (found) setCurrentReceita(found);
+    } catch {
+      // ignore
+    } finally {
+      setReceitaLoading(false);
+    }
+  };
+
+  const filtered = useMemo(() => {
+    return (consultas || []).filter(c => {
+      if (filterStatus && String(c.status_consulta) !== String(filterStatus)) return false;
+      if (startDate) {
+        const d = new Date(c.data_consulta);
+        const s = new Date(startDate);
+        if (d < s) return false;
+      }
+      if (endDate) {
+        const d = new Date(c.data_consulta);
+        const e = new Date(endDate);
+        e.setHours(23,59,59,999);
+        if (d > e) return false;
+      }
+      return true;
+    });
+  }, [consultas, filterStatus, startDate, endDate]);
+
   const paginated = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return consultas.slice(start, start + pageSize);
-  }, [consultas, page]);
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page, pageSize]);
 
-  const totalPages = Math.max(1, Math.ceil(consultas.length / pageSize));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
 
-  // Exemplo de mock para teste (remova isso em produção)
-  const mockConsulta = (id, idCliente, idMedico, status) => ({
-    id,
-    id_cliente: idCliente,
-    id_medico: idMedico,
-    data_consulta: new Date().toISOString(),
-    especialidade: "Clínico Geral",
-    status_consulta: status
-  });
-
-  // Simulação de consultas para teste (remova ou ajuste conforme API real)
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && consultas.length === 0) {
-      setConsultas([
-        mockConsulta(1, "2", "1", "REALIZADA"), // Consulta 1: Médico (id 1), Cliente (id 2)
-        mockConsulta(2, "2", "1", "NAO-REALIZADA"), // Outra consulta para teste
-        mockConsulta(3, "3", "1", "CANCELADA"), // Adicionada para teste
-      ]);
-    }
-  }, []);
+  // Atenção: mock removido. Se precisar de dados fictícios, reativar localmente.
 
   return (
     <div>
       <Header />
-      <div className="page-container">
-        <div className="consultas-header">
-          <h2>Consultas Recentes</h2>
-        </div>
+      <div className="med-page">
+        <div className="page-card page-container">
+          <div className="consultas-header">
+            <h2>Consultas Recentes</h2>
+          </div>
 
-        {loading && <div>Carregando...</div>}
-        {error && <div className="error-text">{error}</div>}
+          {loading && <div>Carregando...</div>}
+          {error && <div className="error-text">{error}</div>}
 
-        <div className="consultas-grid">
+          {/* filtros: situação e intervalo de data */}
+          <div className="sticky-filter filter-row mc-filter-row">
+            <label>
+              Situação:
+              <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1); }} className="ml-xs">
+                <option value="">Todas</option>
+                <option value="NAO-REALIZADA">Ainda não realizada</option>
+                <option value="REALIZADA">Realizada</option>
+                <option value="CANCELADA">Cancelada</option>
+              </select>
+            </label>
+            <label>
+              De:
+              <input type="date" value={startDate} onChange={e => { setStartDate(e.target.value); setPage(1); }} className="ml-xs" />
+            </label>
+            <label>
+              Até:
+              <input type="date" value={endDate} onChange={e => { setEndDate(e.target.value); setPage(1); }} className="ml-xs" />
+            </label>
+            <label className="ml-sm ml-auto">
+              Linhas:
+              <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }} className="ml-xs">
+                <option value={6}>6</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="consultas-grid">
           {paginated.map((c) => (
-            <div key={c.id} className="consulta-card">
+            <div key={c.id} className="consulta-card" style={{ cursor: 'pointer' }} onClick={() => openReceitaModal(c)}>
               <div className="consulta-info">
                 <p className="consulta-medico">{medicosMap[c.id_medico] || "Dr. (não encontrado)"}</p>
                 <p className="consulta-especialidade">{c.especialidade || "Clínico Geral"}</p>
@@ -129,7 +184,27 @@ const PageConsulta = () => {
           ))}
         </div>
 
-        <div className="pagination-row">
+          {/* Receita modal (clicar no card) */}
+        {showReceitaModal && (
+          <Modal onClose={() => { setShowReceitaModal(false); setCurrentReceita(null); }}>
+            <h3 className="modal-title">Receita</h3>
+            {receitaLoading && <div>Carregando...</div>}
+            {!receitaLoading && !currentReceita && <div>Não há receita para esta consulta.</div>}
+            {!receitaLoading && currentReceita && (
+              <div>
+                <div><strong>Fármaco:</strong> {currentReceita.farmaco || '-'}</div>
+                <div><strong>Dose:</strong> {currentReceita.dosagem || '-'}</div>
+                <div><strong>Duração:</strong> {currentReceita.duracao || '-'}</div>
+                <div><strong>Instrução:</strong> {currentReceita.instrucao || '-'}</div>
+              </div>
+            )}
+            <div className="modal-actions">
+              <button className="modal-btn secondary" onClick={() => { setShowReceitaModal(false); setCurrentReceita(null); }}>Fechar</button>
+            </div>
+          </Modal>
+        )}
+
+          <div className="pagination-row">
           <button
             className="Btn"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -145,6 +220,7 @@ const PageConsulta = () => {
           >
             ▶
           </button>
+        </div>
         </div>
       </div>
     </div>

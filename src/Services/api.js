@@ -32,7 +32,7 @@ export const deleteAtendimento = (id) => api.delete(`/atendimentos/del/${id}`);
 export const getConsultas = () => api.get(`/consultas`);
 export const getConsultasById = (id) => api.get(`/consultas/${id}`);
 export const createConsulta = (data) => api.post(`/consultas/insert`,data);
-export const updateConsulta = (id,data) => api.put(`/consultas/insert/${id}`,data);
+export const updateConsulta = (id,data) => api.put(`/consultas/status/${id}`,data);
 export const deleteConsulta = (id) => api.delete(`/consultas/del/${id}`);
 
 

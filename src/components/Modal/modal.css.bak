@@ -1,0 +1,24 @@
+.modal-overlay {
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(4, 4, 4, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-card {
+  background: var(--card-white);
+  padding: var(--space-md);
+  width: 94%;
+  max-width: 720px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  transition: transform .16s ease, opacity .16s ease;
+}
+.modal-header { color: var(--brand-green); font-size: 18px; margin-bottom: var(--space-xs); font-weight: 700; }
+.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top: var(--space-sm); }
+.modal-btn { padding: 8px 12px; border-radius:8px; border: none; cursor: pointer; font-weight: 700; font-family: var(--font-sans); }
+.modal-btn.secondary { background: transparent; border: 1px solid var(--brand-green); color: var(--brand-green); }
+.modal-btn.primary { background: var(--brand-green); color: var(--card-white); }
+.modal-card textarea, .modal-card input { font-family: var(--font-sans); font-size: var(--font-size-sm); }
