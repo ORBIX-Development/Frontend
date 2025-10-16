@@ -16,7 +16,7 @@ export const deleteUsuario = (id) => api.delete(`/usuarios/del/${id}`);
 
 //Agendamento
 export const getAgendamentos = () => api.get(`/agendamentos`);
-export const getAgendamentoById = (id) => api.get(`/agendamentos/${id}`);
+export const getAgendamentoByIdCliente = (id) => api.get(`/agendamentos/${id}`);
 export const createAgendamento = (data) => api.post(`/agendamentos/insert`,data);
 export const updateAgendamento = (id,data) => api.put(`/agendamentos/insert/${id}`,data);
 export const deleteAgendamento = (id) => api.delete(`/agendamentos/del/${id}`);

@@ -20,6 +20,7 @@ const PageConsulta = () => {
 
   const userId = localStorage.getItem('userId');
   const userRole = localStorage.getItem('userRole');
+  // create agendamento moved to /agendamentos
 
   useEffect(() => {
     const fetchConsultas = async () => {
@@ -142,12 +143,14 @@ const PageConsulta = () => {
             <label className="ml-sm ml-auto">
               Linhas:
               <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }} className="ml-xs">
-                <option value={6}>6</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
+                <option value={4}>4</option>
+                <option value={8}>8</option>
+                <option value={16}>16</option>
               </select>
             </label>
           </div>
+
+          {/* create agendamento is handled on the /agendamentos page */}
 
           <div className="consultas-grid">
           {paginated.map((c) => (
@@ -203,6 +206,8 @@ const PageConsulta = () => {
             </div>
           </Modal>
         )}
+
+        {/* create agendamento removed from this page; use /agendamentos instead */}
 
           <div className="pagination-row">
           <button
