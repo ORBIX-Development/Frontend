@@ -6,7 +6,7 @@ import GerenConsulta from '../../objects/GerenConsulta';
 import AtendimentosBtn from '../../objects/AtendimentosBtn';
 import AgendamentosBtn from '../../objects/AgendamentosBtn';
 import GerenciarUserBtn from '../../objects/GerenUserBtn';
-import logoSrc from '../../assets/lifeplus.png';
+import logoSrc from '../../assets/imagemReal.png';
 import './header.css';
 
 const Header = ({ role }) => {

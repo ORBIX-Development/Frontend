@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
-import Header from '../../components/Header/header.jsx';
-import Modal from '../../components/Modal/Modal.jsx';
-import useToast from '../../components/Toast/useToast.js';
+import Header from '../../Components/Header/header.jsx';
+import Modal from '../../Components/Modal/Modal.jsx';
+import useToast from '../../Components/Toast/useToast.js';
 import usePagination from '../../hooks/usePagination';
-import { getConsultas, getUsuarioById, updateConsulta, createReceita, getReceitas, updateReceita } from '../../Services/api';
+import { getMedConsultasById, getUsuarioById, updateConsulta, createReceita, getReceitas, updateReceita} from '../../Services/api';
 import './MedConsultas.css';
 
 const PageConsultaMedico = () => {
@@ -31,30 +31,32 @@ const PageConsultaMedico = () => {
     const [editingReceitaId, setEditingReceitaId] = useState(null);
     const [actionMsg, setActionMsg] = useState('');
 
-    const userId = localStorage.getItem('userId');
+    // Tenta pegar o id do médico de várias chaves possíveis
+    const userId = localStorage.getItem('userId') || localStorage.getItem('id') || localStorage.getItem('user_id') || localStorage.getItem('medico_id');
 
     useEffect(() => {
         const load = async () => {
             setLoading(true);
             setError('');
             try {
-                const res = await getConsultas();
-                const list = res && res.data ? res.data : res;
-                const my = (Array.isArray(list) ? list : []).filter(c => String(c.id_medico) === String(userId));
-                setConsultas(my);
+                if (!userId) {
+                    setError('Usuário não identificado');
+                    setConsultas([]);
+                } else {
+                    // Use API endpoint that returns consultas for a doctor directly
+                    const res = await getMedConsultasById(userId);
+                    const list = res && res.data ? res.data : res;
+                    const my = Array.isArray(list) ? list : (list ? [list] : []);
+                    setConsultas(my);
 
-                const clientIds = Array.from(new Set(my.map(c => c.id_cliente).filter(Boolean)));
-                const map = {};
-                await Promise.all(clientIds.map(async (cid) => {
-                    try {
+                    const clientIds = Array.from(new Set(my.map(c => c.id_cliente).filter(Boolean)));
+                    const map = {};
+                    await Promise.all(clientIds.map(async (cid) => {
                         const r = await getUsuarioById(cid);
-                        const u = r && r.data ? r.data : r;
-                        if (u && u.nome) map[cid] = u.nome;
-                    } catch {
-                        // ignore
-                    }
-                }));
-                setClientesMap(map);
+                        if (r && r.data && r.data.nome) map[cid] = r.data.nome;
+                    }));
+                    setClientesMap(map);
+                }
             } catch {
                 setError('Erro ao carregar consultas');
             } finally {
@@ -224,7 +226,7 @@ const PageConsultaMedico = () => {
                                             </div>
                                             <div className="mc-body">
                                                 <div className="mc-top">
-                                                    <div className="mc-title">{clientesMap[c.id_cliente] || `Paciente ${c.id_cliente}`}</div>
+                                                    <div className="mc-title">{clientesMap[c.id_cliente] || `Paciente (${c.nome})`}</div>
                                                     <div className={`mc-badge ${c.status_consulta === 'realizada' ? 'done' : c.status_consulta === 'cancelada' ? 'cancel' : 'pending'}`}>{statusLabel(c.status_consulta)}</div>
                                                 </div>
                                                 <div className="mc-sub">{c.especialidade || 'Clínico Geral'}</div>

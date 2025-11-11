@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
 import Modal from '../../components/Modal/Modal.jsx';
-import { getConsultas, getUsuarioById, getReceitas } from '../../Services/api';
+import { getConsultas, getUsuarioById, getReceitas, getConsultasById } from '../../Services/api';
 import "./Consulta.css";
 
 const PageConsulta = () => {
@@ -45,15 +45,10 @@ const PageConsulta = () => {
 
         const medIds = Array.from(new Set((filtered || []).map(c => c.id_medico).filter(Boolean)));
         const map = {};
-        await Promise.all(medIds.map(async (mid) => {
-          try {
-            const r = await getUsuarioById(mid);
-            const u = r && r.data ? r.data : r;
-            if (u && u.nome) map[mid] = u.nome;
-          } catch (err) {
-            // ignore individual user fetch errors
-            console.debug('Erro ao buscar usuário:', err);
-          }
+        await Promise.all(medIds.map(async (cid) => {
+            const r = await getUsuarioById(cid);
+            const user = Array.isArray(r.data) ? r.data[0] : r.data;
+            if (user && user.nome) map[cid] = user.nome;
         }));
         setMedicosMap(map);
       } catch {
@@ -156,13 +151,13 @@ const PageConsulta = () => {
           {paginated.map((c) => (
             <div key={c.id} className="consulta-card" style={{ cursor: 'pointer' }} onClick={() => openReceitaModal(c)}>
               <div className="consulta-info">
-                <p className="consulta-medico">{medicosMap[c.id_medico] || "Dr. (não encontrado)"}</p>
+                <p className="consulta-medico">{`Dr. ${medicosMap[c.id_medico] || "não encontrado"}`}</p>
                 <p className="consulta-especialidade">{c.especialidade || "Clínico Geral"}</p>
                 <p className="consulta-data">
                   {new Date(c.data_consulta).toLocaleString("pt-BR", {
                     day: "2-digit",
                     month: "2-digit",
-                    year: "numeric",
+                    year: "numeric",  
                     hour: "2-digit",
                     minute: "2-digit",
                   })}

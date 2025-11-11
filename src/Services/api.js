@@ -34,6 +34,8 @@ export const getConsultasById = (id) => api.get(`/consultas/${id}`);
 export const createConsulta = (data) => api.post(`/consultas/insert`,data);
 export const updateConsulta = (id,data) => api.put(`/consultas/status/${id}`,data);
 export const deleteConsulta = (id) => api.delete(`/consultas/del/${id}`);
+export const getMedConsultasById = (id) => api.get(`/consultas/med/${id}`);
+
 
 
 export const getReceitas = () => api.get(`/receitas`);
