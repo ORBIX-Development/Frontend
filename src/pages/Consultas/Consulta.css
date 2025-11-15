@@ -25,7 +25,7 @@
 .Btn[disabled] { opacity:0.5; cursor:default; }
 
 /* Page-scoped color overrides to remove green accents on /consultas */
-.page-card .Btn.primary { background: #0b63d6; color: #fff; border: none; }
+.page-card .Btn.primary { background: #00a71c; color: #fff; border: none; }
 .page-card .Btn.primary:hover { filter: brightness(.95); }
 .page-card .consulta-status.status-concluida { background: #e6f0ff; color: #0b47a6; }
 

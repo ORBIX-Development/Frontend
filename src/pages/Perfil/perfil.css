@@ -6,7 +6,7 @@ html, body, #root {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #c8f1e6;
+  background: linear-gradient(180deg, #e9fff8, #58af9b54);
 }
 
 body {

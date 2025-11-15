@@ -103,7 +103,7 @@ const PageConsulta = () => {
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
 
   // Atenção: mock removido. Se precisar de dados fictícios, reativar localmente.
-
+  let name
   return (
     <div>
       <Header />
@@ -146,12 +146,14 @@ const PageConsulta = () => {
           </div>
 
           {/* create agendamento is handled on the /agendamentos page */}
-
+          
           <div className="consultas-grid">
           {paginated.map((c) => (
+            name = medicosMap[c.id_medico],
             <div key={c.id} className="consulta-card" style={{ cursor: 'pointer' }} onClick={() => openReceitaModal(c)}>
               <div className="consulta-info">
-                <p className="consulta-medico">{`Dr. ${medicosMap[c.id_medico] || "não encontrado"}`}</p>
+                <p className="consulta-medico">
+                  {`Dr. ${name || "não encontrado"}`}</p>
                 <p className="consulta-especialidade">{c.especialidade || "Clínico Geral"}</p>
                 <p className="consulta-data">
                   {new Date(c.data_consulta).toLocaleString("pt-BR", {

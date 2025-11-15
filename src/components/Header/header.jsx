@@ -22,24 +22,24 @@ const Header = ({ role }) => {
       <HomeBtn key="home" />,
       <ConsultasBtn key="consultas" />,
       <AgendamentosBtn key="agendamentos" />,
-      <PerfilBtn key="perfil" />,
+      // <PerfilBtn key="perfil" />,
     ],
     medico: [
       <HomeBtn key="home" />,
       <MedConsultas key="medconsultas" />,
       <AtendimentosBtn key="atendimentos" />,
-      <PerfilBtn key="perfil" />,
+      // <PerfilBtn key="perfil" />,
     ],
     secretaria: [
       <HomeBtn key="home" />,
       <GerenConsulta key="gerenconsultas" />,
       <AgendamentosBtn key="agendamentos" />,
-      <PerfilBtn key="perfil" />,
+      // <PerfilBtn key="perfil" />,
     ],
     admin: [
       <HomeBtn key="home" />,
       <GerenciarUserBtn key="gerenuser" />,
-      <PerfilBtn key="perfil" />,
+      // <PerfilBtn key="perfil" />,
     ],
   };
 

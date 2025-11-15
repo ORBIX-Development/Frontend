@@ -1,0 +1,228 @@
+import React, { useEffect, useState } from "react";
+import Header from "../../components/Header/header.jsx";
+import Modal from "../../components/Modal/Modal.jsx";
+import {
+  getAgendamentos,
+  getAgendamentoByIdCliente,
+  deleteAgendamento,
+  createAgendamento,
+  createConsulta,
+  getMedicos,
+} from "../../Services/api";
+import { toast,ToastContainer } from "react-toastify";
+import "./Agendamentos.css";
+
+const PageAgendamentos = () => {
+  const [agendamentos, setAgendamentos] = useState([]);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))); //Erro
+  const [showModal, setShowModal] = useState(false);
+  const [showAcceptModal, setShowAcceptModal] = useState(false);
+  const [novoAgendamento, setNovoAgendamento] = useState({
+    data_dia: "",
+    descricao: "",
+  });
+  const [medicos, setMedicos] = useState([]);
+  const [selectedAgendamento, setSelectedAgendamento] = useState(null);
+  const [selectedMedico, setSelectedMedico] = useState("");
+
+  const loadAgendamentos = async () => {
+    try {
+      if (user?.cargo === "CLIENTE") {
+        const res = await getAgendamentoByIdCliente(user.id);
+        setAgendamentos(res.data);
+      } else if (user?.cargo === "SECRETARIA") {
+        const res = await getAgendamentos();
+        setAgendamentos(res.data);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao carregar agendamentos");
+    }
+  };
+
+  const handleCreate = async () => {
+    if (!novoAgendamento.data_dia || !novoAgendamento.descricao) {
+      toast.warn("Preencha todos os campos!");
+      return;
+    }
+    try {
+      await createAgendamento({
+        data_dia: novoAgendamento.data_dia,
+        descricao: novoAgendamento.descricao,
+        id_cliente: user.id,
+      });
+      toast.success("Agendamento criado com sucesso!");
+      setShowModal(false);
+      loadAgendamentos();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao criar agendamento!");
+    }
+  };
+
+  const handleCancel = async (id) => {
+    if (!window.confirm("Deseja realmente cancelar este agendamento?")) return;
+    try {
+      await deleteAgendamento(id);
+      toast.info("Agendamento cancelado!");
+      loadAgendamentos();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao cancelar!");
+    }
+  };
+
+  const handleAccept = async () => {
+    if (!selectedMedico) {
+      toast.warn("Selecione um médico!");
+      return;
+    }
+    try {
+      await createConsulta({
+        status_consulta: "nao_realizada",
+        data_consulta: selectedAgendamento.data_dia,
+        id_medico: selectedMedico,
+        id_cliente: selectedAgendamento.id_cliente,
+      });
+      await deleteAgendamento(selectedAgendamento.id);
+      toast.success("Consulta criada e agendamento removido!");
+      setShowAcceptModal(false);
+      loadAgendamentos();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao aceitar agendamento!");
+    }
+  };
+
+  const openAcceptModal = async (agendamento) => {
+    setSelectedAgendamento(agendamento);
+    setShowAcceptModal(true);
+    try {
+      const res = await getMedicos();
+      setMedicos(res.data);
+    } catch (err) {
+      console.error(err);
+      toast.error("Erro ao carregar médicos!");
+    }
+  };
+
+  useEffect(() => {
+    loadAgendamentos();
+  }, );//React Hook useEffect has a missing dependency:'loadAgendamentos'. Either include it or remove the dependency array
+
+  return (
+    <div className="page-agendamentos">
+      <Header />
+      <div className="content">
+        <h2>Agendamentos</h2>
+
+        {user?.cargo === "CLIENTE" && (
+          <button className="btn" onClick={() => setShowModal(true)}>
+            Novo Agendamento
+          </button>
+        )}
+
+        <div className="agendamento-list">
+          {agendamentos.length > 0 ? (
+            agendamentos.map((a) => (
+              <div className="card-agendamento" key={a.id}>
+                <p>
+                  <b>Data:</b>{" "}
+                  {new Date(a.data_dia).toLocaleString("pt-BR", {
+                    dateStyle: "short",
+                    timeStyle: "short",
+                  })}
+                </p>
+                <p>
+                  <b>Descrição:</b> {a.descricao}
+                </p>
+                <p>
+                  <b>Status:</b> {a.status}
+                </p>
+
+                {user?.cargo === "CLIENTE" && (
+                  <button
+                    className="btn-cancel"
+                    onClick={() => handleCancel(a.id)}
+                  >
+                    Cancelar
+                  </button>
+                )}
+
+                {user?.cargo === "SECRETARIA" && a.status === "PENDENTE" && (
+                  <button
+                    className="btn-accept"
+                    onClick={() => openAcceptModal(a)}
+                  >
+                    Aceitar
+                  </button>
+                )}
+              </div>
+            ))
+          ) : (
+            <p>Nenhum agendamento encontrado.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Modal de criação (Cliente) */}
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} title="Novo Agendamento">
+          <div className="modal-body">
+            <label>Data e hora:</label>
+            <input
+              type="datetime-local"
+              value={novoAgendamento.data_dia}
+              onChange={(e) =>
+                setNovoAgendamento({
+                  ...novoAgendamento,
+                  data_dia: e.target.value,
+                })
+              }
+            />
+            <label>Descrição:</label>
+            <textarea
+              value={novoAgendamento.descricao}
+              onChange={(e) =>
+                setNovoAgendamento({
+                  ...novoAgendamento,
+                  descricao: e.target.value,
+                })
+              }
+            ></textarea>
+
+            <button className="btn" onClick={handleCreate}>
+              Criar
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {/* Modal de aceitar (Secretária) */}
+      {showAcceptModal && (
+        <Modal onClose={() => setShowAcceptModal(false)} title="Aceitar Agendamento">
+          <div className="modal-body">
+            <label>Selecione o médico:</label>
+            <select
+              value={selectedMedico}
+              onChange={(e) => setSelectedMedico(e.target.value)}
+            >
+              <option value="">Selecione...</option>
+              {medicos.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.nome}
+                </option>
+              ))}
+            </select>
+
+            <button className="btn-accept" onClick={handleAccept}>
+              Confirmar
+            </button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+};
+
+export default PageAgendamentos;
