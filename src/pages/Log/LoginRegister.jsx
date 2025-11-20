@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './LoginRegister.css';
 import 'dotenv';
 
 function LoginRegister() {
-  const [isSignIn, setIsSignIn] = useState(false);
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const initialMode = params.get('mode') === 'login';
+
+  const [isSignIn, setIsSignIn] = useState(initialMode);
 
   // Login state
   const [loginEmail, setLoginEmail] = useState('');

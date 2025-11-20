@@ -11,7 +11,7 @@ export const registerUsuario = (data) => api.post(`/usuarios/register`,data);
 export const loginUsuario = (data) => api.post(`/usuarios/login`,data);
 export const updateUsuario = (id,data) => api.put(`/usuarios/insert/${id}`,data);
 export const searchNomeUsuario = (nome) => api.get(`/usuarios/search/${nome}`);
-export const getMedicos = () => api.get(`/usuarios/med`);
+export const getMedicos = () => api.get(`/usuarios/med/1`);
 
 export const deleteUsuario = (id) => api.delete(`/usuarios/del/${id}`);
 
@@ -36,6 +36,7 @@ export const createConsulta = (data) => api.post(`/consultas/insert`,data);
 export const updateConsulta = (id,data) => api.put(`/consultas/status/${id}`,data);
 export const deleteConsulta = (id) => api.delete(`/consultas/del/${id}`);
 export const getMedConsultasById = (id) => api.get(`/consultas/med/${id}`);
+export const getConsultasPendentes = () => api.get(`/consultas/pendentes`);
 
 
 

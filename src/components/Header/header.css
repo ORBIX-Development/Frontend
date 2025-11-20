@@ -1,39 +1,60 @@
-
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+*{
+font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
 
 
 .header {
   width: 100%;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.92);
   border-bottom: 1px solid rgba(15,177,107,0.06);
-  box-shadow: 0 6px 20px rgba(10,20,10,0.03);
-  padding: 10px 0;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+  backdrop-filter: blur(12px);
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 0 16px;
+  padding: 12px 20px;
 }
 
 .header-left { display:flex; align-items:center; gap:12px; }
-.brand-logo { width:0.3; height:42px; border-radius:8px; object-fit:cover; }
-.brand-text { display:flex; flex-direction:column; line-height:1; }
-.brand-name { font-weight:800; color:#114b3a; font-size:16px; }
+.brand-logo { height:40px; width:auto; border-radius:8px; object-fit:cover; }
+.brand-text { display:flex; flex-direction:column; line-height:1.2; }
+.brand-name { font-weight:700; color:#114b3a; font-size:17px; letter-spacing:0.03em; }
 .brand-sub { font-size:12px; color:#6c757d; }
 
-.header-nav { display:flex; gap:12px; align-items:center; margin-left:12px; flex:1; justify-content:center; }
+.header-nav {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-left:16px;
+  flex:1;
+  justify-content:center;
+}
+
 .header-btn { display:inline-flex; }
 
-.header-right { display:flex; align-items:center; gap:8px; }
+.header-right { display:flex; align-items:center; gap:10px; }
 .user-info { display:flex; align-items:center; gap:10px; }
-.user-avatar { width:40px; height:40px; border-radius:50%; background:#dff6ee; color:#0b6b4a; display:flex; align-items:center; justify-content:center; font-weight:700; }
-.user-meta { display:flex; flex-direction:column; font-size:12px; color:#405b52; }
-.user-name { font-weight:700; }
-.user-role { color:#7a8f86; }
+.user-avatar {
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:#dff6ee;
+  color:#0b6b4a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  font-size:13px;
+}
+.user-meta { display:flex; flex-direction:column; font-size:11px; color:#405b52; }
+.user-name { font-weight:600; }
+.user-role { color:#7a8f86; text-transform:capitalize; }
 
 @media (max-width: 900px) {
   .brand-text { display:none; }

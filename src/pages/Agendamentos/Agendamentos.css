@@ -1,5 +1,5 @@
 .page-container { padding: 20px; }
-.list-item { background: #fff; padding: 12px; margin-bottom: 8px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+.ag-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
 .empty-list { color: #666; padding: 16px; text-align: center; }
 .badge { display: inline-block; padding: 6px 8px; border-radius: 999px; font-weight:700; text-transform: capitalize; font-size: 12px; }
 .badge.pendente { background:#FFF4E5; color:#B46A00; }
@@ -7,6 +7,16 @@
 .badge.cancelado { background:#FFE8E8; color:#A00B0B; }
 /* fallback generic */
 .badge { background:#eee; color:#333; }
+
+.ag-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(10,20,10,0.04);
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
 
 /* disabled button look */
 button[disabled], .modal-btn[disabled] { opacity: 0.6; cursor: not-allowed; }

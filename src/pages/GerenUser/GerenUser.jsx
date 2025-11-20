@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
 import { getUsuarios, updateUsuario, deleteUsuario } from '../../Services/api';
+import './GerenUser.css';
 
 const PageGerenUser = () => {
     const [users, setUsers] = useState([]);

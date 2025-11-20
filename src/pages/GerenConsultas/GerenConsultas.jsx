@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getAgendamentos, deleteAgendamento, getUsuarios, createConsulta, getConsultas } from '../../Services/api';
+import { getAgendamentos, deleteAgendamento, getUsuarios, createConsulta, getConsultasPendentes, getMedicos } from '../../Services/api';
+
 import '../Consultas/Consulta.css';
 
 const PageGerenConsultas = () => {
@@ -9,13 +10,13 @@ const PageGerenConsultas = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const [users, setUsers] = useState([]); // for medicos/clientes
+    const [users, setUsers] = useState([]); // todos usuários (para map de nomes)
+    const [medicos, setMedicos] = useState([]); // médicos vindos de getMedicos()
 
     // modais
     const [showAcceptModal, setShowAcceptModal] = useState(false);
     const [currentSolicitacao, setCurrentSolicitacao] = useState(null);
     const [selectedMedico, setSelectedMedico] = useState('');
-
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [createData, setCreateData] = useState('');
     const [createMedico, setCreateMedico] = useState('');
@@ -29,13 +30,20 @@ const PageGerenConsultas = () => {
             setLoading(true);
             setError('');
             try {
-                const [agRes, uRes, cRes] = await Promise.all([getAgendamentos(), getUsuarios(), getConsultas()]);
+                const [agRes, uRes, cRes, mRes] = await Promise.all([
+                    getAgendamentos(),
+                    getUsuarios(),
+                    getConsultasPendentes(),
+                    getMedicos()
+                ]);
                 const ag = agRes && agRes.data ? agRes.data : agRes;
                 const us = uRes && uRes.data ? uRes.data : uRes;
                 const cs = cRes && cRes.data ? cRes.data : cRes;
+                const ms = mRes && mRes.data ? mRes.data : mRes;
 
                 setSolicitacoes(Array.isArray(ag) ? ag : []);
                 setUsers(Array.isArray(us) ? us : []);
+                setMedicos(Array.isArray(ms) ? ms : []);
 
                 // show only consultas from today onwards
                 const today = new Date();
@@ -50,7 +58,6 @@ const PageGerenConsultas = () => {
         load();
     }, []);
 
-    const medicos = users.filter(u => u.cargo === 'medico');
     const clientes = users.filter(u => u.cargo === 'cliente');
 
     const usersMap = React.useMemo(() => {
@@ -68,20 +75,40 @@ const PageGerenConsultas = () => {
 
     const handleAccept = async (e) => {
         e.preventDefault();
-        if (!selectedMedico) {
+
+        const medicoId = Number(selectedMedico);
+        if (!medicoId) {
             setActionMsg('Escolha um médico');
             return;
         }
+
         try {
+            const dataConsulta = normalizeDateForBackend(currentSolicitacao.data_dia);
             // criar consulta com dados da solicitação
-            await createConsulta({ status_consulta: 'nao_realizada', data_consulta: currentSolicitacao.data_dia, id_medico: selectedMedico, id_cliente: currentSolicitacao.id_usuario });
+            await createConsulta({
+                status_consulta: 'NAO-REALIZADA',
+                data_consulta: dataConsulta,
+                id_medico: medicoId,
+                id_cliente: currentSolicitacao.id_cliente
+            });
+
             // remover a solicitação
             await deleteAgendamento(currentSolicitacao.id);
             setActionMsg('Solicitação aceita e consulta marcada');
             // atualizar listas localmente
             setSolicitacoes(solicitacoes.filter(s => s.id !== currentSolicitacao.id));
             // atualizar consultas: adicionar criada (simplificação: refetch seria ideal)
-            setConsultas(prev => [...prev, { data_consulta: currentSolicitacao.data_dia, status_consulta: 'nao_realizada', id_medico: selectedMedico, id_cliente: currentSolicitacao.id_usuario }]);
+            const dataConsultaNorm = dataConsulta;
+            setConsultas(prev => [
+                ...prev,
+                {
+                    data_consulta: dataConsultaNorm,
+                    status_consulta: 'NAO-REALIZADA',
+                    id_medico: medicoId,
+                    id_cliente: currentSolicitacao.id_cliente
+                }
+            ]);
+
             setShowAcceptModal(false);
         } catch {
             setActionMsg('Erro ao aceitar solicitação');
@@ -112,9 +139,10 @@ const PageGerenConsultas = () => {
             return;
         }
         try {
-            await createConsulta({ status_consulta: 'nao_realizada', data_consulta: createData, id_medico: createMedico, id_cliente: createCliente });
+            const dataConsulta = normalizeDateForBackend(createData);
+            await createConsulta({ status_consulta: 'nao_realizada', data_consulta: dataConsulta, id_medico: createMedico, id_cliente: createCliente });
             setActionMsg('Consulta marcada com sucesso');
-            setConsultas(prev => [...prev, { data_consulta: createData, status_consulta: 'nao_realizada', id_medico: createMedico, id_cliente: createCliente }]);
+            setConsultas(prev => [...prev, { data_consulta: dataConsulta, status_consulta: 'nao_realizada', id_medico: createMedico, id_cliente: createCliente }]);
             setShowCreateModal(false);
         } catch {
             setActionMsg('Erro ao marcar consulta');
@@ -127,17 +155,50 @@ const PageGerenConsultas = () => {
         cancelada: 'Cancelada'
     };
 
+    const getStatusLabel = (rawStatus) => {
+        const key = String(rawStatus || '').toLowerCase().replace('-', '_');
+        return statusMap[key] || rawStatus || '';
+    };
+
+    const normalizeDateForBackend = (value) => {
+        if (!value) return value;
+
+        // se vier como Date, formatar manualmente
+        if (value instanceof Date) {
+            const pad = (n) => (n < 10 ? '0' + n : '' + n);
+            const y = value.getFullYear();
+            const m = pad(value.getMonth() + 1);
+            const d = pad(value.getDate());
+            const hh = pad(value.getHours());
+            const mm = pad(value.getMinutes());
+            const ss = pad(value.getSeconds());
+            return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+        }
+
+        let s = String(value);
+        // remover sufixo Z se existir
+        if (s.endsWith('Z')) s = s.slice(0, -1);
+        // trocar T por espaço
+        s = s.replace('T', ' ');
+        // se vier sem segundos (ex: 2025-11-27 19:30), acrescentar :00
+        if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(s)) {
+            s = s + ':00';
+        }
+        return s;
+    };
+
     // UI: apenas secretária deve usar essa página, mas permissões são simples aqui
     return (
         <div>
             <Header />
+            <div className="med-page">
             <div className="page-container">
                 <h2>Gerenciar Consultas</h2>
                 {userRole !== 'secretaria' && <div>Atenção: esta tela é destinada à secretária.</div>}
-
+{/* 
                 <div className="mb-md">
                     <button className="Btn" onClick={openCreate}>Marcar nova consulta</button>
-                </div>
+                </div> */}
 
                 {actionMsg && <div className="mb-sm">{actionMsg}</div>}
 
@@ -146,34 +207,64 @@ const PageGerenConsultas = () => {
 
                 <section>
                     <h3>Solicitações</h3>
-                    {solicitacoes.length === 0 && <div>Não há solicitações.</div>}
-                    <ul>
-                        {solicitacoes.map(s => (
-                            <li key={s.id} className="list-item">
-                                <strong>{new Date(s.data_dia).toLocaleString()}</strong>
-                                {' - '}Solicitado por: {usersMap[s.id_usuario]?.nome || s.id_usuario} {usersMap[s.id_usuario]?.cod_doc ? `(${usersMap[s.id_usuario].cod_doc})` : ''}
-                                <div className="mt-xs actions-row">
-                                    <button className="Btn" onClick={() => openAccept(s)}>Aceitar</button>
-                                    <button className="Btn" onClick={() => handleDeny(s)}>Negar</button>
+                    {solicitacoes.length === 0 ? (
+                        <div>Não há solicitações.</div>
+                    ) : (
+                        <div className="consultas-grid">
+                            {solicitacoes.map(s => (
+                                <div key={s.id} className="consulta-card">
+                                    <div className="consulta-info">
+                                        <p className="consulta-data">
+                                            {new Date(s.data_dia).toLocaleString()}
+                                        </p>
+                                        <p className="consulta-medico">
+                                            Cliente: {usersMap[s.id_cliente]?.nome || s.id_cliente}
+                                            {usersMap[s.id_cliente]?.cod_doc ? ` (${usersMap[s.id_cliente].cod_doc})` : ''}
+                                        </p>
+                                        {s.descricao && (
+                                            <p className="consulta-especialidade">
+                                                Observação: {s.descricao}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="actions-row">
+                                        <button className="Btn" onClick={() => openAccept(s)}>Aceitar</button>
+                                        <button className="Btn" onClick={() => handleDeny(s)}>Negar</button>
+                                    </div>
                                 </div>
-                            </li>
-                        ))}
-                    </ul>
+                            ))}
+                        </div>
+                    )}
                 </section>
 
                 <section className="mt-md">
                     <h3>Agenda (a partir de hoje)</h3>
-                    {consultas.length === 0 && <div>Nenhuma consulta agendada.</div>}
-                    <ul>
-                        {consultas.map((c, idx) => (
-                            <li key={idx} className="list-item">
-                                <strong>{new Date(c.data_consulta).toLocaleString()}</strong>
-                                {' - '}{statusMap[c.status_consulta] || c.status_consulta}
-                                {' - Médico: '}{usersMap[c.id_medico]?.nome || c.id_medico} {usersMap[c.id_medico]?.cod_doc ? `(${usersMap[c.id_medico].cod_doc})` : ''}
-                                {' - Cliente: '}{usersMap[c.id_cliente]?.nome || c.id_cliente} {usersMap[c.id_cliente]?.cod_doc ? `(${usersMap[c.id_cliente].cod_doc})` : ''}
-                            </li>
-                        ))}
-                    </ul>
+                    {consultas.length === 0 ? (
+                        <div>Nenhuma consulta agendada.</div>
+                    ) : (
+                        <div className="consultas-grid">
+                            {consultas.map((c, idx) => (
+                                <div key={c.id || idx} className="consulta-card">
+                                    <div className="consulta-info">
+                                        <p className="consulta-data">
+                                            {new Date(c.data_consulta).toLocaleString()}
+                                        </p>
+                                        <p className="consulta-medico">
+                                            Médico: {usersMap[c.id_medico]?.nome || c.id_medico}
+                                            {usersMap[c.id_medico]?.cod_doc ? ` (${usersMap[c.id_medico].cod_doc})` : ''}
+                                        </p>
+                                        <p className="consulta-especialidade">
+                                            Cliente: {usersMap[c.id_cliente]?.nome || c.id_cliente}
+                                            {usersMap[c.id_cliente]?.cod_doc ? ` (${usersMap[c.id_cliente].cod_doc})` : ''}
+                                        </p>
+                                    </div>
+                                    <span className="consulta-status status-pendente">
+                                        {getStatusLabel(c.status_consulta)}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </section>
 
                 {/* Accept modal */}
@@ -181,7 +272,11 @@ const PageGerenConsultas = () => {
                     <div className="dialog-backdrop">
                         <div className="dialog-card">
                             <h3>Aceitar solicitação</h3>
-                            <p>Solicitado por: {currentSolicitacao.id_usuario} em {new Date(currentSolicitacao.data_dia).toLocaleString()}</p>
+                            <p>
+                              Solicitado por: {usersMap[currentSolicitacao.id_cliente]?.nome || currentSolicitacao.id_cliente}
+                              {' '}em {new Date(currentSolicitacao.data_dia).toLocaleString()}
+                            </p>
+
                             <form onSubmit={handleAccept}>
                                 <label className="form-block">
                                     Médico responsável
@@ -235,6 +330,7 @@ const PageGerenConsultas = () => {
                 )}
 
             </div>
+        </div>
         </div>
     );
 };

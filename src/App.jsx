@@ -1,14 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginRegister from './pages/Log/LoginRegister';
-import Home from './pages/Home/home';
-import Perfil from './pages/Perfil/Perfil';
-import Consultas from './pages/Consultas/Consultas';
-import MedConsultas from './pages/MedConsultas/MedConsultas';
-import GerenConsultas from './pages/GerenConsultas/GerenConsultas';
-import GerenUser from './pages/GerenUser/GerenUser';
-import Atendimentos from './pages/Atendimentos/Atendimentos';
-import Agendamentos from './pages/Agendamentos/Agendamentos';
+import './global.css';
+import LoginRegister from './Pages/Log/LoginRegister';
+import Landing from './Pages/Landing/Landing';
+import Home from './Pages/Home/home';
+import Perfil from './Pages/Perfil/Perfil';
+import Consultas from './Pages/Consultas/Consultas';
+import MedConsultas from './Pages/MedConsultas/MedConsultas';
+import GerenConsultas from './Pages/GerenConsultas/GerenConsultas';
+import GerenUser from './Pages/GerenUser/GerenUser';
+import Atendimentos from './Pages/Atendimentos/Atendimentos';
+import Agendamentos from './Pages/Agendamentos/Agendamentos';
 
 // rota protegida por token e (opcional) por cargo
 const ProtectedRoute = ({ element, allowedRoles }) => {
@@ -25,7 +27,8 @@ const ProtectedRoute = ({ element, allowedRoles }) => {
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LoginRegister />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/auth" element={<LoginRegister />} />
       <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
 
       {/* Perfil disponível para usuários autenticados (qualquer cargo) */}

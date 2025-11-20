@@ -48,7 +48,7 @@ body {
 .lr-left {
   width: 45%;
   min-width: 300px;
-  background: var(--green);
+  background: linear-gradient(-135deg, #96e8d5b7 10%, #58af9b 40%, #a01d20 100%);
   color: #fff;
   display: flex;
   align-items: center;
@@ -207,7 +207,7 @@ body {
   cursor: pointer;
   font-weight: 700;
   border: none;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   z-index: 9999999999999999;
 }
 
@@ -225,17 +225,17 @@ body {
 
 /* Botão contornado branco (usado no painel verde) */
 .btn.btn-outline {
-  background: #ffffff; /* antes era transparente */
-  color: #58af9b; /* texto branco */
-  border: 1px solid #58af9b; /* borda verde */
+  background: linear-gradient(280deg, #58af9b); /* antes era transparente */
+  color: #ecf0f1 ; /* texto branco */
+  /* border: 1px solid;  */
   padding: 10px 30px;
   border-radius: 22px;
   font-weight: 700;
-  transition: all 0.3s ease;
+  transition: all 0.7s ease;
 }
 
 .btn-outline:hover {
-  background: #58af9b;
+  background: linear-gradient(50deg, #58af9b, #81b9ac);
   color: #fff;
 }
 
@@ -318,7 +318,7 @@ body {
   display: flex;
   justify-content: center; /* centraliza horizontalmente */
   align-items: center; /* centraliza verticalmente */
-  background: linear-gradient(280deg, #d2f2e8, #58AF9B);
+  background: linear-gradient(280deg, #ecf0f1 );
 }
 
 /* Faz o card parecer suspenso no meio */

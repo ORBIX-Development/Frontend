@@ -177,7 +177,7 @@ const PageConsulta = () => {
                 {c.status_consulta === "REALIZADA"
                   ? "Concluída"
                   : c.status_consulta === "NAO-REALIZADA"
-                  ? "Confirmada"
+                  ? "Em espera"
                   : "Cancelada"}
               </p>
             </div>

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header/header.jsx';
 import { getAgendamentos, deleteAgendamento, createAgendamento, getAgendamentoByIdCliente } from '../../Services/api';
 import Modal from '../../components/Modal/Modal.jsx';
-import useToast from '../../components/Toast/useToast.js';
+// import useToast from '../../components/Toast/useToast.js';
 import './Agendamentos.css';
 
-const AgendamentosPage = () => {CLIENTE
+const AgendamentosPage = () => {
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -147,11 +147,14 @@ const AgendamentosPage = () => {CLIENTE
   return (
     <div>
       <Header />
-      <div className="page-container">
-        <h2>Agendamentos</h2>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
-          {userRole === 'cliente' && <button className="Btn primary" onClick={() => setShowCreate(true)}>Criar agendamento</button>}
-        </div>
+      <div className="med-page">
+        <div className="page-card page-container">
+          <div className="ag-header">
+            <h2>Agendamentos</h2>
+            {userRole === 'cliente' && (
+              <button className="Btn primary" onClick={() => setShowCreate(true)}>Criar agendamento</button>
+            )}
+          </div>
         {loading && <div>Carregando...</div>}
         {error && <div className="error-text">{error}</div>}
         {/* center notice (success / error) */}
@@ -182,28 +185,36 @@ const AgendamentosPage = () => {CLIENTE
         {agendamentos.length === 0 ? (
           <div className="empty-list">Você não tem agendamentos.</div>
         ) : (
-          <ul>
+          <div className="consultas-grid">
             {agendamentos.map(a => (
-              <li key={a.id} className="list-item">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <strong>{new Date(a.data_dia || Date.now()).toLocaleString()}</strong>
-                    <div style={{ color: '#666' }}>{a.descricao || ''}</div>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                        <div style={{ marginBottom: 6 }}>
-                          <small className={`badge ${((a.status_agendamento||a.status||'pendente').toLowerCase())}`}>{(a.status_agendamento || a.status || 'pendente')}</small>
-                        </div>
-                        {userRole === 'cliente' && (
-                          <button className="Btn ml-sm" onClick={() => handleCancel(a.id)} disabled={cancelingId === a.id}>
-                            {cancelingId === a.id ? 'Cancelando...' : 'Cancelar'}
-                          </button>
-                        )}
-                  </div>
+              <div key={a.id} className="ag-card">
+                <div className="consulta-info">
+                  <p className="consulta-data">
+                    {new Date(a.data_dia || Date.now()).toLocaleString('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </p>
+                  <p className="consulta-especialidade">{a.descricao || 'Agendamento'}</p>
                 </div>
-              </li>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ marginBottom: 6 }}>
+                    <small className={`badge ${((a.status_agendamento || a.status || 'pendente').toLowerCase())}`}>
+                      {(a.status_agendamento || a.status || 'pendente')}
+                    </small>
+                  </div>
+                  {userRole === 'cliente' && (
+                    <button className="Btn ml-sm" onClick={() => handleCancel(a.id)} disabled={cancelingId === a.id}>
+                      {cancelingId === a.id ? 'Cancelando...' : 'Cancelar'}
+                    </button>
+                  )}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
         {showCreate && (
           <Modal onClose={() => setShowCreate(false)}>
@@ -230,6 +241,7 @@ const AgendamentosPage = () => {CLIENTE
             </div>
           </Modal>
         )}
+        </div>
       </div>
     </div>
   );
