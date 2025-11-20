@@ -32,9 +32,9 @@
 .Btn[disabled] { opacity: 0.5; cursor: default; }
 .Btn.primary { background: #0fb16b; color: white; border: none; padding: 12px 18px; border-radius: 12px; font-weight:800; }
 .Btn.primary:hover { filter:brightness(.95); }
-.Btn.warning { background: #ff7a18; color: white; border: none; padding: 12px 18px; border-radius: 12px; font-weight:800; }
-.Btn.warning:hover { filter:brightness(.95); }
-.Btn.warning { background: #ff8a3d; color: #ffffff; border: none; padding: 8px 14px; border-radius: 10px; }
+.Btn.warning { background: #fbff18; color: white; border: none; padding: 12px 18px; border-radius: 12px; font-weight:800; }
+.Btn.warning:hover { filter:brightness(.80); }
+.Btn.warning { background: #ff6f01c2; color: #ffffff; border: none; padding: 8px 14px; border-radius: 10px; }
 .Btn.warning:hover { filter: brightness(.95); }
 .pagination-row { display:flex; align-items:center; justify-content:space-between; margin-top:18px; }
 .pagination-row .filter-row { display:flex; gap:8px; }

@@ -32,11 +32,11 @@ const PageConsulta = () => {
 
         let filtered = list;
         if (userId) {
-          if (userRole === 'cliente') {
-            // Cliente vê apenas suas consultas como paciente
+          if (userRole === 'CLIENTE') {
+
             filtered = list.filter(c => String(c.id_cliente) === String(userId));
-          } else if (userRole === 'medico') {
-            // Médico vê apenas suas consultas como profissional
+          } else if (userRole === 'MEDICO') {
+
             filtered = list.filter(c => String(c.id_medico) === String(userId));
           }
         }

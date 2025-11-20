@@ -86,10 +86,10 @@ const PageGerenUser = () => {
                         <label className="label-small">Filtrar por cargo:</label>
                         <select value={filterCargo} onChange={(e) => setFilterCargo(e.target.value)}>
                             <option value="">Todos</option>
-                            <option value="cliente">cliente</option>
-                            <option value="medico">medico</option>
-                            <option value="secretaria">secretaria</option>
-                            <option value="admin">admin</option>
+                            <option value="CLIENTE">Cliente</option>
+                            <option value="MEDICO">Médico</option>
+                            <option value="SECRETARIA">Secretária</option>
+                            <option value="ADMIN">Admin</option>
                         </select>
                     </div>
                     <div>
@@ -125,10 +125,10 @@ const PageGerenUser = () => {
                                 <td>{u.email}</td>
                                 <td>
                                     <select value={u.cargo} onChange={(e) => handleChangeCargo(u.id, e.target.value)} disabled={currentRole !== 'admin'}>
-                                        <option value="cliente">cliente</option>
-                                        <option value="medico">medico</option>
-                                        <option value="secretaria">secretaria</option>
-                                        <option value="admin">admin</option>
+                                        <option value="CLIENTE">cliente</option>
+                                        <option value="MEDICO">medico</option>
+                                        <option value="SECRETARIA">secretaria</option>
+                                        <option value="ADMIN">admin</option>
                                     </select>
                                 </td>
                                 <td>

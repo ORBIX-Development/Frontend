@@ -27,13 +27,13 @@ const Header = ({ role }) => {
     medico: [
       <HomeBtn key="home" />,
       <MedConsultas key="medconsultas" />,
-      <AtendimentosBtn key="atendimentos" />,
+      // <AtendimentosBtn key="atendimentos" />,
       // <PerfilBtn key="perfil" />,
     ],
     secretaria: [
       <HomeBtn key="home" />,
       <GerenConsulta key="gerenconsultas" />,
-      <AgendamentosBtn key="agendamentos" />,
+      // <AgendamentosBtn key="agendamentos" />,
       // <PerfilBtn key="perfil" />,
     ],
     admin: [

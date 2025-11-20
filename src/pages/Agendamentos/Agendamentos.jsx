@@ -5,13 +5,13 @@ import Modal from '../../components/Modal/Modal.jsx';
 import useToast from '../../components/Toast/useToast.js';
 import './Agendamentos.css';
 
-const AgendamentosPage = () => {
+const AgendamentosPage = () => {CLIENTE
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const userId = localStorage.getItem('userId') || localStorage.getItem('id') || localStorage.getItem('user_id');
   const userRole = (localStorage.getItem('userRole') || '').toLowerCase();
-  const toast = useToast();
+
 
   // create modal
   const [showCreate, setShowCreate] = useState(false);
