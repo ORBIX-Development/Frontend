@@ -21,7 +21,7 @@
 .mc-title { font-weight:700; color:#114b3a; font-size:16px; }
 .mc-badge { padding:6px 10px; border-radius:16px; font-weight:700; font-size:12px; }
 .mc-badge.done { background:#e6f7ee; color:#0a7a48; }
-.mc-badge.pending { background:#fff7e6; color:#7a5a0a; }
+.mc-badge.pending { background:#fef6d7; color:#8e690c; }
 .mc-badge.cancel { background:#ffe6e6; color:#7a0a0a; }
 .mc-sub { color:#6c757d; margin-top:6px; }
 .mc-date { color:#8aa095; margin-top:6px; font-size:13px; }
