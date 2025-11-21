@@ -228,8 +228,8 @@ const PageGerenConsultas = () => {
                                         )}
                                     </div>
                                     <div className="actions-row">
-                                        <button className="Btn" onClick={() => openAccept(s)}>Aceitar</button>
-                                        <button className="Btn" onClick={() => handleDeny(s)}>Negar</button>
+                                        <button className="Btn-accept" onClick={() => openAccept(s)}>Aceitar</button>
+                                        <button className="Btn-deny" onClick={() => handleDeny(s)}>Recusar</button>
                                     </div>
                                 </div>
                             ))}

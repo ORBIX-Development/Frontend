@@ -138,9 +138,9 @@ const PageConsulta = () => {
             <label className="ml-sm ml-auto">
               Linhas:
               <select value={pageSize} onChange={e => { setPageSize(Number(e.target.value)); setPage(1); }} className="ml-xs">
-                <option value={4}>4</option>
-                <option value={8}>8</option>
-                <option value={16}>16</option>
+                <option value={6}>6</option>
+                <option value={12}>12</option>
+                <option value={18}>18</option>
               </select>
             </label>
           </div>

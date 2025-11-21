@@ -24,6 +24,11 @@
 .pagination-row .Btn { background:#ffffff; border:1px solid #e6efe9; padding:6px 12px; border-radius:999px; }
 .Btn[disabled] { opacity:0.5; cursor:default; }
 
+.Btn-accept{ background:#0b6b3095; border:1px solid #e6efe9; padding:6px 12px; border-radius:999px;font-weight: 500; }
+.Btn-accept:hover{ background:linear-gradient(230deg, #078300ab 10%, #00a40087 90%); border:1px solid #e6efe9; padding:6px 12px; border-radius:999px; font-weight: 580 }
+.Btn-deny{ background:#b60b0eaf; border:1px solid #e6efe9; padding:6px 12px; border-radius:999px; font-weight: 500}
+.Btn-deny:hover{ background:linear-gradient(230deg, #ce0000ab 10%, #ff000087 90%); border:1px solid #e6efe9; padding:6px 12px; border-radius:999px; font-weight: 580}
+
 /* Page-scoped color overrides to remove green accents on /consultas */
 .page-card .Btn.primary { background: #00b703; color: #fff; border: none; }
 .page-card .Btn.primary:hover { filter: brightness(.95); }
@@ -70,6 +75,7 @@
 
 .full-width {
   width: 100%;
+  border-radius: 4.5px;
 }
 
 .actions-row {
