@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
 import Modal from '../../components/Modal/Modal.jsx';
-import { getConsultas, getUsuarioById, getReceitas, getConsultasById } from '../../Services/api';
+import { getUsuarioById, getReceitas, getConsultas, getConsultasById } from '../../Services/api';
 import "./Consulta.css";
 
 const PageConsulta = () => {
@@ -23,11 +23,12 @@ const PageConsulta = () => {
   // create agendamento moved to /agendamentos
 
   useEffect(() => {
+    // console.log(userId);
     const fetchConsultas = async () => {
       setLoading(true);
       setError('');
       try {
-        const res = await getConsultas();
+        const res = await getConsultasById(userId);
         const list = res && res.data ? res.data : res;
 
         let filtered = list;
@@ -103,7 +104,10 @@ const PageConsulta = () => {
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
 
   // Atenção: mock removido. Se precisar de dados fictícios, reativar localmente.
-  let name
+  // let name
+  // let a = if(name == 'Gabriel Macedo'){
+  //   a = "Picologia"
+  // }
   return (
     <div>
       <Header />
@@ -148,13 +152,25 @@ const PageConsulta = () => {
           {/* create agendamento is handled on the /agendamentos page */}
           
           <div className="consultas-grid">
+            
           {paginated.map((c) => (
-            name = medicosMap[c.id_medico],
+            
+            
+          // c.especialidade = if(name == 'Gabriel Macedo'){
+          //           c.especialidade = "Picologia"
+          //         };
+                  
+            // name = medicosMap[c.id_medico],
+            // c.especialidade = if(name == 'Gabriel Macedo'){
+            //         c.especialidade = "Picologia"
+            //       };
+            
             <div key={c.id} className="consulta-card" style={{ cursor: 'pointer' }} onClick={() => openReceitaModal(c)}>
               <div className="consulta-info">
                 <p className="consulta-medico">
-                  {`Dr. ${name || "não encontrado"}`}</p>
-                <p className="consulta-especialidade">{c.especialidade || "Clínico Geral"}</p>
+                  {`Dr. ${medicosMap[c.id_medico] || "não encontrado"}`}</p>
+                  
+                <p className="consulta-especialidade">{ c.especialidade || "Clínico Geral"}</p>
                 <p className="consulta-data">
                   {new Date(c.data_consulta).toLocaleString("pt-BR", {
                     day: "2-digit",

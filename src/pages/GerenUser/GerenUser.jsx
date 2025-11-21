@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
-import { getUsuarios, updateUsuario, deleteUsuario } from '../../Services/api';
+import { getUsuarios, updateUsuario, deleteUsuario, updateUsuarioCargo } from '../../Services/api';
 import './GerenUser.css';
 
 const PageGerenUser = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [actionMsg, setActionMsg] = useState('');
+    const [actionMsg, setActionMsg] = useState(''); 
     const [filterCargo, setFilterCargo] = useState('');
     const [searchName, setSearchName] = useState('');
     const [page, setPage] = useState(1);
@@ -35,7 +35,7 @@ const PageGerenUser = () => {
     const handleChangeCargo = async (id, novoCargo) => {
         setActionMsg('');
         try {
-            await updateUsuario(id, { cargo: novoCargo });
+            await updateUsuarioCargo(id, { cargo: novoCargo });
             setUsers(u => u.map(x => x.id === id ? { ...x, cargo: novoCargo } : x));
             setActionMsg('Cargo atualizado');
         } catch {
