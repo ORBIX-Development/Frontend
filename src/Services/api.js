@@ -10,6 +10,7 @@ export const getUsuarioById = (id) => api.get(`/usuarios/${id}`);
 export const registerUsuario = (data) => api.post(`/usuarios/register`,data);
 export const loginUsuario = (data) => api.post(`/usuarios/login`,data);
 export const updateUsuario = (id,data) => api.put(`/usuarios/insert/${id}`,data);
+export const updateUsuarioCargo = (id,data) => api.put(`/usuarios/insert/cargo/${id}`,data);
 export const searchNomeUsuario = (nome) => api.get(`/usuarios/search/${nome}`);
 export const getMedicos = () => api.get(`/usuarios/med/1`);
 

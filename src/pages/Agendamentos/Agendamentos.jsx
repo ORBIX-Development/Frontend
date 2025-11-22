@@ -114,7 +114,7 @@ const AgendamentosPage = () => {
     setCenterNotice({ show: true, title: 'Solicitado', message: 'Agendamento solicitado.', variant: 'success' });
     setCreating(true);
     try {
-      const resCreate = await createAgendamento({ data_dia: datetime, descricao: descricao || '', id_cliente: Number(userId), status: 'pendente' });
+      const resCreate = await createAgendamento({ data_dia: datetime, descricao: descricao || 'Check-Up', id_cliente: Number(userId), status: 'PENDENTE' });
       // try to extract insert id from response
       const insertId = resCreate && resCreate.data && (resCreate.data.insertId || resCreate.data.id) ? (resCreate.data.insertId || resCreate.data.id) : null;
       if (insertId) {
