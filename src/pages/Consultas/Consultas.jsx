@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Header from '../../components/Header/header.jsx';
 import Modal from '../../components/Modal/Modal.jsx';
-import { getUsuarioById, getReceitas, getConsultas, getConsultasById } from '../../Services/api';
+import { getUsuarioById, getReceitas, getConsultasById } from '../../Services/api';
 import "./Consulta.css";
 
 const PageConsulta = () => {
@@ -103,11 +103,6 @@ const PageConsulta = () => {
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
 
-  // Atenção: mock removido. Se precisar de dados fictícios, reativar localmente.
-  // let name
-  // let a = if(name == 'Gabriel Macedo'){
-  //   a = "Picologia"
-  // }
   return (
     <div>
       <Header />
@@ -155,15 +150,6 @@ const PageConsulta = () => {
             
           {paginated.map((c) => (
             
-            
-          // c.especialidade = if(name == 'Gabriel Macedo'){
-          //           c.especialidade = "Picologia"
-          //         };
-                  
-            // name = medicosMap[c.id_medico],
-            // c.especialidade = if(name == 'Gabriel Macedo'){
-            //         c.especialidade = "Picologia"
-            //       };
             
             <div key={c.id} className="consulta-card" style={{ cursor: 'pointer' }} onClick={() => openReceitaModal(c)}>
               <div className="consulta-info">

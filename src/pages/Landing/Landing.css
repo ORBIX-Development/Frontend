@@ -106,9 +106,10 @@ a{
 
 .landing-highlights {
   margin-top: 24px;
+  /* margin-left: 5px; */
   list-style: none;
   padding: 0;
-  color: #ecf0f1;
+  color: #4a5568;
 }
 
 .landing-highlights li + li {
@@ -135,10 +136,12 @@ a{
 }
 
 .landing-card img {
-  max-width: 100%;
+  width: 100%;
   height: 180px;
   object-fit: contain;
   margin-bottom: 12px;
+  background-color: #58af9b8d;
+  border-radius: 20px;
 }
 
 .landing-card p {
