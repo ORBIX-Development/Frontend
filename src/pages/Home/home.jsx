@@ -1,5 +1,5 @@
 import React from "react";
-import "./Home.css";
+import "./home.css";
 import Header from '../../components/Header/header.jsx';
 import fotoDoutor from '../../assets/doutor2.png';
 
