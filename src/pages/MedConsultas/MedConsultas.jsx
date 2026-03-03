@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
-import Header from '../../Components/Header/header.jsx';
-import Modal from '../../Components/Modal/Modal.jsx';
-import useToast from '../../Components/Toast/useToast.js';
+import Header from '../../components/Header/header.jsx';
+import Modal from '../../components/Modal/Modal.jsx';
+import useToast from '../../components/Toast/useToast.js';
 import usePagination from '../../hooks/usePagination';
 import { getMedConsultasById, getUsuarioById, updateConsulta, createReceita, getReceitas, updateReceita } from '../../Services/api';
 import './MedConsultas.css';

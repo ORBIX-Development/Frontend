@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './global.css';
-import LoginRegister from './Pages/Log/LoginRegister';
-import Landing from './Pages/Landing/Landing';
-import Home from './Pages/Home/home';
-import Perfil from './Pages/Perfil/Perfil';
-import Consultas from './Pages/Consultas/Consultas';
-import MedConsultas from './Pages/MedConsultas/MedConsultas';
-import GerenConsultas from './Pages/GerenConsultas/GerenConsultas';
-import GerenUser from './Pages/GerenUser/GerenUser';
-import Atendimentos from './Pages/Atendimentos/Atendimentos';
-import Agendamentos from './Pages/Agendamentos/Agendamentos';
+import LoginRegister from './pages/Log/LoginRegister';
+import Landing from './pages/Landing/Landing';
+import Home from './pages/Home/home';
+import Perfil from './pages/Perfil/Perfil';
+import Consultas from './pages/Consultas/Consultas';
+import MedConsultas from './pages/MedConsultas/MedConsultas';
+import GerenConsultas from './pages/GerenConsultas/GerenConsultas';
+import GerenUser from './pages/GerenUser/GerenUser';
+import Atendimentos from './pages/Atendimentos/Atendimentos';
+import Agendamentos from './pages/Agendamentos/Agendamentos';
 
 // rota protegida por token e (opcional) por cargo
 const ProtectedRoute = ({ element, allowedRoles }) => {
