@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './LoginRegister.css';
-import 'dotenv';
+// import 'dotenv';
 
 function LoginRegister() {
   const location = useLocation();
@@ -60,7 +60,10 @@ function LoginRegister() {
       localStorage.setItem('token', data.token);
       // armazenar dados do usuário para controle de rotas/menus
       if (data.user) {
-        localStorage.setItem('userRole', String(data.user.cargo || '').toLowerCase());
+        localStorage.setItem(
+          'userRole',
+          String(data.user.cargo || '').toLowerCase(),
+        );
         localStorage.setItem('userId', String(data.user.id || ''));
         localStorage.setItem('userName', String(data.user.nome || ''));
       }
